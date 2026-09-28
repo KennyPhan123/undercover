@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#07080b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Gián Điệp · Quản trò</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ============ 1. PLAYERS ============ -->
+  <section class="screen active" id="s-players">
+    <header class="head">
+      <div class="brand"><span class="dot"></span><h1 class="h1">GIÁN ĐIỆP</h1></div>
+    </header>
+
+    <div class="list-wrap" id="listWrap">
+      <div class="list" id="playerList"></div>
+      <p class="empty" id="emptyHint">Chưa có người chơi nào.</p>
+      <div class="addrow" id="addRow" hidden>
+        <input id="nameInput" type="text" placeholder="Tên người chơi" autocomplete="off"
+               autocorrect="off" spellcheck="false" enterkeyhint="done" maxlength="18">
+        <button class="iconbtn" id="btnAddDone" aria-label="Xong">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <footer class="foot">
+      <button class="btn" id="btnAdd">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        Thêm người chơi
+      </button>
+      <button class="btn primary" id="btnToSettings" disabled>Tiếp tục</button>
+    </footer>
+  </section>
+
+  <!-- ============ 2. SETTINGS ============ -->
+  <section class="screen" id="s-settings">
+    <div class="rowflex">
+      <button class="iconbtn" id="btnBackPlayers" aria-label="Quay lại">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <h1 class="h1" style="font-size:21px">CÀI ĐẶT</h1>
+    </div>
+
+    <div class="scroll">
+      <div class="sec">
+        <div class="label">Chế độ</div>
+        <div class="chips" id="modeChips"></div>
+        <p class="hint" id="modeHint" style="margin-top:11px"></p>
+      </div>
+
+      <div class="sec">
+        <div class="label">Thời gian mỗi lượt</div>
+        <div class="stepper">
+          <button class="stepbtn" id="timeMinus" aria-label="Giảm">−</button>
+          <div class="stepval" id="timeVal">5 phút</div>
+          <button class="stepbtn" id="timePlus" aria-label="Tăng">+</button>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="label">Số gián điệp</div>
+        <div class="stepper">
+          <button class="stepbtn" id="spyMinus" aria-label="Giảm">−</button>
+          <div class="stepval" id="spyVal">1</div>
+          <button class="stepbtn" id="spyPlus" aria-label="Tăng">+</button>
+        </div>
+        <div class="chips" id="spyModeChips"></div>
+      </div>
+
+      <div class="sec">
+        <div class="label">Chủ đề</div>
+        <div class="chips" id="topicChips"></div>
+        <button class="btn" id="btnShowWords" style="margin-top:12px;padding:13px">Xem danh sách từ</button>
+      </div>
+
+    </div>
+
+    <footer class="foot">
+      <button class="btn primary" id="btnStartDeal">Bắt đầu chia từ</button>
+    </footer>
+  </section>
+
+  <!-- ============ 3. DEAL ============ -->
+  <section class="screen" id="s-deal">
+    <div class="deal-top">
+      <span class="pill" id="dealProgress">1 / 4</span>
+    </div>
+
+    <div class="stage" id="stage">
+      <div class="panel" id="wordPanel">
+        <div class="pword" id="panelWord"></div>
+        <div class="ptopic" id="panelTopic" hidden></div>
+        <div class="pnote" id="panelNote" hidden></div>
+      </div>
+      <div class="card" id="dealCard">
+        <div class="cname" id="cardName">—</div>
+        <div class="chint">
+          <svg class="cup" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V6M6 12l6-6 6 6"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <footer class="foot">
+      <button class="btn" id="btnNextPlayer" disabled>Người tiếp theo</button>
+    </footer>
+  </section>
+
+  <!-- ============ 4. GAME ============ -->
+  <section class="screen" id="s-game">
+    <div class="game-top">
+      <span class="pill" id="gameRound">Lượt 1</span>
+      <span class="pill" id="gameAlive">Còn 4 người</span>
+    </div>
+
+    <div class="game-mid">
+      <div class="ringwrap">
+        <svg class="ring" viewBox="0 0 260 260">
+          <circle class="bgc" cx="130" cy="130" r="118"></circle>
+          <circle class="fgc" id="ringFg" cx="130" cy="130" r="118"></circle>
+        </svg>
+        <div class="timer-wrap">
+          <div class="timer" id="timerText">05:00</div>
+          <div class="tlabel" id="timerLabel">Thảo luận</div>
+        </div>
+      </div>
+      <div class="game-roster" id="gameRoster"></div>
+    </div>
+
+    <footer class="foot">
+      <button class="btn primary" id="btnPause">Tạm dừng</button>
+    </footer>
+  </section>
+
+  <!-- ============ 5. VOTE ============ -->
+  <section class="screen" id="s-vote">
+    <div class="rowflex">
+      <h1 class="h1" style="font-size:20px">BỎ PHIẾU</h1>
+      <span class="spacer"></span>
+      <span class="pill" id="voteProgress">0 / 4 phiếu</span>
+    </div>
+    <div class="progressbar"><i id="voteBar"></i></div>
+    <div class="vote-list" id="voteList"></div>
+    <footer class="foot">
+      <div class="rowflex" style="gap:10px">
+        <button class="btn" id="btnUndoVote" style="padding:14px">Hoàn tác</button>
+        <button class="btn" id="btnClearVote" style="padding:14px">Xoá phiếu</button>
+      </div>
+    </footer>
+  </section>
+
+  <!-- ============ 6. END ============ -->
+  <section class="screen" id="s-end">
+    <div class="scroll">
+      <div class="spyreveal" id="spyReveal" hidden></div>
+      <div class="wordgrid" id="wordGrid">
+        <div class="wcard reveal" id="cardCivil">
+          <div class="wl">Từ của dân</div><div class="wv" id="endCivil"></div><div class="whint"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/></svg></div>
+        </div>
+        <div class="wcard spy reveal" id="cardSpy">
+          <div class="wl" id="endSpyLabel">Từ của gián điệp</div><div class="wv" id="endSpy"></div><div class="whint"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/></svg></div>
+        </div>
+      </div>
+      <p class="label" style="font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--muted2);margin:20px 0 0">DANH SÁCH VAI TRÒ</p>
+      <div class="result-list" id="endList"></div>
+    </div>
+    <footer class="foot">
+      <button class="btn primary" id="btnPlayAgain">Chơi ván mới</button>
+      <button class="btn text" id="btnHome">Về màn hình đầu</button>
+    </footer>
+  </section>
+
+  <!-- ============ overlays ============ -->
+  <div class="overlay" id="ovPause">
+    <div class="sheet">
+      <h3 class="stitle" id="pauseTitle">Đang tạm dừng</h3>
+      <div class="acts">
+        <button class="btn primary" id="btnResume">Tiếp tục</button>
+        <button class="btn danger" id="btnGoVote">Bỏ phiếu</button>
+        <button class="btn text" id="btnQuitGame">Kết thúc ván</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="ovResult">
+    <div class="sheet">
+      <h3 class="stitle" id="resTitle">—</h3>
+      <p class="stext" id="resText">—</p>
+      <div class="acts" id="resActs"></div>
+    </div>
+  </div>
+
+  <div class="overlay verdict" id="ovVerdict">
+    <div class="vwrap">
+      <div class="vbadge"><div class="vicon" id="vIcon"></div></div>
+      <div class="vword" id="vWord">—</div>
+      <div class="vname" id="vName">—</div>
+    </div>
+    <div class="vacts" id="vActs"></div>
+  </div>
+
+  <div class="overlay" id="ovWords">
+    <div class="sheet">
+      <h3 class="stitle" id="wordsTitle">Danh sách từ</h3>
+      <p class="stext" id="wordsSub"></p>
+      <div class="wordlist" id="wordListEl"></div>
+      <div class="acts" style="margin-top:16px">
+        <button class="btn" id="btnCloseWords">Đóng</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+</div>
+
+<script src="js/words.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

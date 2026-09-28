@@ -1,0 +1,237 @@
+:root{
+  --bg:#F6F3EF; --surface:#FFFFFF; --surface2:#F1ECE6; --surface3:#E7E0D8;
+  --line:#EAE3DB; --text:#3B3542; --muted:#8D8593; --muted2:#B5AEBb;
+  --rose:#E7A8AC; --rose-deep:#C77F86; --rose-ink:#8E4A52; --rose-soft:#FBEEEE;
+  --sage:#8FBF9F; --sage-ink:#3F7F63; --sage-soft:#EDF4EF;
+  --r:18px; --ease:cubic-bezier(.22,.9,.28,1);
+  --shadow:0 1px 2px rgba(59,53,66,.05), 0 12px 26px -22px rgba(59,53,66,.28);
+  --safe-b:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
+  overscroll-behavior:none;-webkit-font-smoothing:antialiased}
+body{display:flex;justify-content:center;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+#app{position:relative;z-index:1;width:100%;max-width:470px;height:100vh;height:100dvh;overflow:hidden}
+
+/* ---------- screens ---------- */
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;
+  padding:22px 18px calc(16px + var(--safe-b));opacity:0;pointer-events:none;
+  transform:translateY(8px);transition:opacity .26s var(--ease),transform .26s var(--ease)}
+.screen.active{opacity:1;pointer-events:auto;transform:none}
+
+/* ---------- generic ---------- */
+.h1{font-size:24px;font-weight:750;letter-spacing:.1em;margin:0}
+.sub{color:var(--muted);font-size:13.5px;line-height:1.5;margin:10px 0 0}
+.hint{color:var(--muted);font-size:12.5px;line-height:1.5}
+#modeHint{margin:8px 0 0;min-height:1.2em}
+.btn{appearance:none;font:inherit;font-weight:600;font-size:15px;border-radius:15px;
+  padding:16px 18px;width:100%;display:flex;align-items:center;justify-content:center;gap:9px;
+  cursor:pointer;color:var(--text);background:var(--surface);border:1px solid var(--line);
+  transition:transform .12s var(--ease),background .2s,border-color .2s,opacity .2s}
+.btn:active{transform:scale(.985)}
+.btn.primary{background:#F0C9CB;border-color:#EBBFC2;color:#7A3B43}
+.btn.danger{background:var(--rose-soft);border-color:#F0CFD2;color:var(--rose-ink)}
+.btn.text{background:none;border:0;color:var(--muted);font-weight:500;font-size:14px;padding:12px}
+.btn.text:active{background:none}
+.btn:disabled{opacity:.4;pointer-events:none}
+.foot{display:flex;flex-direction:column;gap:10px;padding-top:12px}
+.rowflex{display:flex;align-items:center;gap:12px}
+.spacer{flex:1}
+.iconbtn{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--surface);
+  border:1px solid var(--line);color:var(--text);cursor:pointer;flex:none}
+.iconbtn:active{transform:scale(.95)}
+svg{display:block}
+
+/* ---------- 1. người chơi ---------- */
+.head{padding-top:6px}
+.brand{display:flex;align-items:center;gap:9px}
+.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--rose)}
+.list-wrap{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;margin:20px -4px 0;
+  padding:0 4px 4px;scrollbar-width:none}
+.list-wrap::-webkit-scrollbar{display:none}
+.row{position:relative;border-radius:15px;background:var(--rose);margin-bottom:9px;
+  overflow:hidden;touch-action:pan-y;will-change:transform}
+.row-front{position:relative;z-index:2;display:flex;align-items:center;gap:12px;height:62px;
+  padding:0 6px 0 14px;background:var(--surface);border:1px solid var(--line);
+  border-radius:15px;touch-action:pan-y;will-change:transform;box-shadow:var(--shadow)}
+.row-del{position:absolute;inset:0;z-index:1;display:flex;align-items:center;
+  color:#7A3B43;font-weight:650;font-size:14px}
+.row-del .dside{display:none;align-items:center;gap:9px;padding:0 18px}
+.row-del .dside.left{margin-right:auto}     /* chỉ hiện 1 nhãn thì vẫn nằm đúng phía của nó */
+.row-del .dside.right{margin-left:auto}
+.row.sw-right .row-del .dside.left{display:flex}
+.row.sw-left  .row-del .dside.right{display:flex}
+.row.dragging{z-index:9}
+.row.dragging .row-front{border-color:var(--rose);box-shadow:0 16px 30px -20px rgba(59,53,66,.4)}
+.idx{width:26px;height:26px;border-radius:9px;background:var(--surface2);color:var(--muted);
+  font-size:12.5px;font-weight:700;display:grid;place-items:center;flex:none}
+.pname{font-size:17px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.handle{width:46px;height:46px;margin-left:auto;display:grid;place-items:center;color:var(--muted2);
+  touch-action:none;cursor:grab;flex:none}
+.handle:active{cursor:grabbing}
+.empty{color:var(--muted2);font-size:14px;text-align:center;padding:34px 12px}
+.addrow{display:flex;gap:9px;align-items:center;margin-top:6px}
+.addrow[hidden]{display:none}
+.addrow input{flex:1;height:56px;border-radius:14px;background:var(--surface);color:var(--text);
+  border:1px solid var(--rose);padding:0 16px;font-size:17px;font-family:inherit;outline:none}
+.addrow input::placeholder{color:var(--muted2)}
+
+/* ---------- 2. cài đặt ---------- */
+.sec{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;
+  margin-top:14px;box-shadow:var(--shadow)}
+.sec .label{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}
+.chip{padding:11px 16px;border-radius:12px;background:var(--surface2);border:1px solid transparent;
+  font-size:14.5px;font-weight:600;color:var(--text);cursor:pointer;transition:.18s var(--ease)}
+.chip:active{transform:scale(.96)}
+.chip.on{background:#F0C9CB;border-color:#EBBFC2;color:#7A3B43}
+.stepper{display:flex;align-items:center;justify-content:space-between;margin-top:13px;gap:12px}
+.stepbtn{width:56px;height:56px;border-radius:15px;background:var(--surface2);border:1px solid transparent;
+  color:var(--text);font-size:24px;font-weight:600;display:grid;place-items:center;cursor:pointer}
+.stepbtn:active{transform:scale(.95)}
+.stepbtn:disabled{opacity:.35;pointer-events:none}
+.stepval{font-size:34px;font-weight:750;font-variant-numeric:tabular-nums}
+
+/* ---------- 3. chia từ ---------- */
+.deal-top{display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:13.5px;font-weight:600}
+.stage{position:relative;flex:1;margin:16px 0 14px;touch-action:none}
+.panel{position:absolute;inset:0;border-radius:26px;background:var(--rose-soft);
+  border:1px solid #F0D8DA;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:14px;padding:24px;text-align:center;overflow:hidden}
+.panel .pword{font-size:clamp(40px,13vw,60px);font-weight:750;letter-spacing:-.01em;line-height:1.1;
+  color:var(--rose-ink);text-wrap:balance}
+.panel .ptopic{font-size:15px;font-weight:700;color:var(--text);margin-top:-4px}
+.panel .pnote{font-size:13px;color:var(--muted);max-width:250px;line-height:1.45}
+.card{position:absolute;inset:0;border-radius:26px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:16px;padding:24px;text-align:center;
+  background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);
+  will-change:transform;cursor:grab}
+.card .cname{font-size:clamp(36px,12vw,56px);font-weight:750;line-height:1.05;text-wrap:balance;max-width:100%;
+  overflow-wrap:anywhere}
+.card .chint{position:absolute;bottom:22px;left:0;right:0;display:grid;place-items:center;color:var(--muted2)}
+.card .cup{animation:bob 1.9s var(--ease) infinite}
+@keyframes bob{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(-6px);opacity:.95}}
+
+/* ---------- 4. chơi ---------- */
+.game-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.pill{font-size:12.5px;font-weight:650;color:var(--muted);background:var(--surface);border:1px solid var(--line);
+  padding:8px 13px;border-radius:11px}
+.game-mid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+.ringwrap{position:relative;width:min(58vw,250px);aspect-ratio:1}
+.ring{width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:7;stroke-linecap:round}
+.ring .bgc{stroke:#EDE7E0}
+.ring .fgc{stroke:var(--rose);transition:stroke .3s}
+.timer-wrap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.timer{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:clamp(48px,16vw,66px);
+  font-weight:600;letter-spacing:.01em;font-variant-numeric:tabular-nums}
+.timer.low{color:var(--rose-ink)}
+.tlabel{font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted2)}
+/* danh sách người chơi trong lúc chơi: ai bị loại thì gạch tên + dấu × */
+.game-roster{width:100%;display:flex;flex-wrap:wrap;gap:7px;justify-content:center;align-content:flex-start;
+  max-height:34vh;overflow-y:auto;scrollbar-width:none;padding:2px}
+.game-roster::-webkit-scrollbar{display:none}
+.pchip{font-size:13px;color:var(--text);background:var(--surface);border:1px solid var(--line);
+  padding:8px 12px;border-radius:10px;font-weight:650;display:inline-flex;align-items:center;gap:7px}
+.pchip.out{opacity:.5;background:var(--surface2);border-color:#E4DCD4}   /* bị loại: chỉ mờ đi */
+.prole{display:none;font-size:10px;font-weight:750;letter-spacing:.05em;text-transform:uppercase;
+  padding:3px 6px;border-radius:7px;background:var(--sage-soft);color:var(--sage-ink)}
+.pchip.out .prole{display:inline}
+.prole.spy{background:var(--rose-soft);color:var(--rose-ink)}
+
+/* ---------- overlay ---------- */
+.overlay{position:absolute;inset:0;z-index:40;display:flex;align-items:flex-end;justify-content:center;
+  background:rgba(246,243,239,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  opacity:0;pointer-events:none;transition:opacity .24s var(--ease);padding:18px 18px calc(18px + var(--safe-b))}
+.overlay.open{opacity:1;pointer-events:auto}
+.sheet{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:22px;
+  box-shadow:0 -10px 40px -24px rgba(59,53,66,.35);transform:translateY(16px);transition:transform .28s var(--ease)}
+.overlay.open .sheet{transform:none}
+.sheet .stitle{font-size:20px;font-weight:750;margin:0 0 6px}
+.sheet .stext{color:var(--muted);font-size:14px;line-height:1.5;margin:0 0 18px}
+.sheet .acts{display:flex;flex-direction:column;gap:10px}
+
+/* ---------- kết quả bỏ phiếu: giữa màn hình, to, xanh = đúng / đỏ = sai ---------- */
+.overlay.verdict{flex-direction:column;align-items:center;justify-content:center;background:var(--rose-soft)}
+.overlay.verdict.ok{background:var(--sage-soft)}
+.overlay.verdict .vwrap{flex:1;width:100%;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:10px}
+.vbadge{width:clamp(92px,28vw,124px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;color:#fff;
+  background:var(--rose-deep);transform:scale(.86);transition:transform .34s cubic-bezier(.2,1.4,.4,1)}
+.overlay.open .vbadge{transform:none}
+.overlay.verdict.ok .vbadge{background:var(--sage)}
+.overlay.verdict .vicon svg{width:clamp(46px,15vw,64px);height:auto}
+.vname{font-size:clamp(21px,7vw,30px);font-weight:750;text-align:center;max-width:100%;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vword{font-size:clamp(34px,11.5vw,54px);font-weight:800;line-height:1.14;letter-spacing:.01em;
+  text-align:center;text-wrap:balance;color:var(--rose-ink)}
+.overlay.verdict.ok .vword{color:var(--sage-ink)}
+.vacts{width:100%;max-width:430px;display:flex;flex-direction:column;gap:10px;padding-top:18px}
+
+/* ---------- vote ---------- */
+.vote-list{flex:1;overflow-y:auto;margin:10px -4px 0;padding:0 4px 4px;scrollbar-width:none}
+.vote-list::-webkit-scrollbar{display:none}
+.vrow{position:relative;display:flex;align-items:center;gap:12px;height:62px;padding:0 14px;margin-bottom:9px;
+  background:var(--surface);border:1px solid var(--line);border-radius:15px;cursor:pointer;
+  transition:border-color .18s,background .18s,transform .1s var(--ease)}
+.vrow:active{transform:scale(.99)}
+.vrow.hasvotes{border-color:#EADBD8;background:#FDF7F6}
+.vrow.lead{border-color:var(--rose);background:var(--rose-soft)}
+.vname{font-size:17px;font-weight:650}
+.vcount{margin-left:auto;min-width:34px;height:34px;border-radius:11px;background:var(--surface2);
+  color:var(--muted2);font-weight:700;font-size:16px;display:grid;place-items:center;transition:.18s}
+.vcount.on{background:#F0C9CB;color:#7A3B43}
+.vbars{position:absolute;left:0;right:0;bottom:0;height:3px;border-radius:0 0 15px 15px;background:var(--rose);
+  transform-origin:left;transform:scaleX(0);transition:transform .25s var(--ease)}
+.progressbar{height:5px;border-radius:99px;background:var(--surface3);overflow:hidden;margin-top:14px}
+.progressbar i{display:block;height:100%;background:var(--rose);width:0;transition:width .25s var(--ease)}
+
+/* ---------- kết thúc ---------- */
+/* màn kết thúc không công bố ai thắng — để nhóm tự đoán từ bên ngoài */
+.wordgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.wordgrid.single{grid-template-columns:1fr}
+.wcard[hidden]{display:none}
+.wcard{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:14px;
+  box-shadow:var(--shadow);min-height:86px;display:flex;flex-direction:column;justify-content:center}
+.wcard.reveal{cursor:pointer}
+.wcard.reveal:active{transform:scale(.99)}
+.wcard .whint{color:var(--muted2);margin-top:9px}
+.wcard.shown .whint{display:none}
+.wcard.reveal:not(.shown) .wv{display:none}
+.wordlist .gtitle{width:100%;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted2);margin:10px 0 1px}
+.wcard .wl{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2)}
+.wcard .wv{font-size:18px;font-weight:700;margin-top:7px}
+.wcard.spy{border-color:#F0D8DA}
+.wcard.spy .wv{color:var(--rose-ink)}
+.result-list{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.rrow{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);
+  border-radius:13px;padding:13px 14px;font-size:15px}
+.rrow.out{opacity:.42}                                    /* người bị loại: cả card mờ đi */
+.tag{margin-left:auto;font-size:11px;font-weight:750;letter-spacing:.06em;text-transform:uppercase;
+  padding:5px 9px;border-radius:8px;background:var(--surface2);color:var(--muted)}
+.tag.spy{background:var(--rose-soft);color:var(--rose-ink);border:1px solid #F0D8DA}
+.tag.civ{background:var(--sage-soft);color:var(--sage-ink);border:1px solid #D8E8DF}
+.tag.out{opacity:.55}
+.spyreveal{text-align:center;font-size:12.5px;font-weight:750;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);margin-top:11px}
+.spyreveal[hidden]{display:none}
+.scroll{flex:1;overflow-y:auto;scrollbar-width:none;margin:0 -4px;padding:0 4px}
+.scroll::-webkit-scrollbar{display:none}
+
+/* ---------- danh sách từ ---------- */
+.wordlist{max-height:46vh;overflow-y:auto;display:flex;flex-wrap:wrap;gap:7px;margin-top:2px;
+  padding:2px;scrollbar-width:none}
+.wordlist::-webkit-scrollbar{display:none}
+.wordlist span{background:var(--surface2);border-radius:9px;padding:7px 10px;font-size:13.5px;
+  color:var(--text);white-space:nowrap}
+
+/* ---------- toast ---------- */
+#toast{position:absolute;left:0;right:0;bottom:calc(22px + var(--safe-b));z-index:60;display:flex;
+  justify-content:center;pointer-events:none}
+.toast{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--line);
+  border-radius:15px;padding:12px 12px 12px 16px;box-shadow:0 12px 30px -18px rgba(59,53,66,.4);
+  font-size:14px;transform:translateY(20px);opacity:0;transition:.28s var(--ease)}
+.toast.in{transform:none;opacity:1;pointer-events:auto}
+.toast button{background:none;border:0;color:var(--rose-ink);font:inherit;font-weight:700;cursor:pointer;padding:6px 8px}
