@@ -52,7 +52,23 @@ const TOPICS = [
       ["Rau câu", "Bánh flan"],
       ["Nước ngọt", "Nước ép trái cây"],
       ["Canh", "Súp"],
-      ["Bún", "Mì"]
+      ["Bún", "Mì"],
+      ["Bánh xèo", "Bánh khọt"],
+      ["Bánh chưng", "Bánh tét"],
+      ["Gà rán", "Hamburger"],
+      ["Pizza", "Mì Ý"],
+      ["Sữa tươi", "Sữa đậu nành"],
+      ["Trà sữa", "Sinh tố"],
+      ["Nước lọc", "Nước khoáng"],
+      ["Bắp rang", "Khoai tây chiên"],
+      ["Dưa hấu", "Dứa"],
+      ["Dâu tây", "Nho"],
+      ["Bánh kem", "Bánh cupcake"],
+      ["Cà phê", "Trà"],
+      ["Bánh tráng", "Bánh đa"],
+      ["Khoai lang", "Khoai tây"],
+      ["Mật ong", "Siro"],
+      ["Cá viên", "Bò viên"]
     ]
   },
 
@@ -61,22 +77,19 @@ const TOPICS = [
     id: "phuong-tien",
     name: "Phương tiện",
     pairs: [
-      ["Máy bay", "Tên lửa"],
       ["Ô tô", "Xe máy"],
       ["Xe buýt", "Tàu điện ngầm"],
-      ["Tàu hoả", "Tàu thuỷ"],
-      ["Xe đạp", "Ván trượt"],
-      ["Trực thăng", "Khí cầu"],
       ["Xe tải", "Máy kéo"],
       ["Xe cứu thương", "Xe cứu hoả"],
-      ["Xe tang", "Xe bọc thép"],
       ["Xe lăn", "Nạng"],
       ["Xe ngựa", "Xe bò"],
       ["Tàu ngầm", "Tàu khu trục"],
       ["Thuyền buồm", "Ca nô"],
       ["Diều", "Máy bay giấy"],
       ["Xe cẩu", "Xe ủi"],
-      ["Tàu vũ trụ", "Trạm vũ trụ"]
+      ["Xe bán tải", "Xe SUV"],
+      ["Xe điện", "Xe hybrid"],
+      ["Xe trượt scooter", "Ván trượt"]
     ]
   },
 
@@ -116,7 +129,21 @@ const TOPICS = [
       ["Nón bảo hiểm", "Áo mưa"],
       ["Đàn ghi-ta", "Sáo trúc"],
       ["Bình nước", "Cái ly"],
-      ["Ổ cắm điện", "Công tắc điện"]
+      ["Ổ cắm điện", "Công tắc điện"],
+      ["Tivi", "Máy chiếu"],
+      ["Laptop", "Máy tính bàn"],
+      ["Bàn phím", "Chuột máy tính"],
+      ["Đồng hồ đeo tay", "Đồng hồ báo thức"],
+      ["Kính mắt", "Kính râm"],
+      ["Cốc", "Bát"],
+      ["Nồi cơm điện", "Ấm siêu tốc"],
+      ["Tủ sách", "Kệ tivi"],
+      ["Bóng đèn", "Đèn ngủ"],
+      ["Khăn mặt", "Khăn tắm"],
+      ["Máy in", "Máy photocopy"],
+      ["Nồi chiên không dầu", "Lò vi sóng"],
+      ["Bàn học", "Bàn làm việc"],
+      ["Bình giữ nhiệt", "Bình thủy"]
     ]
   },
 
@@ -155,13 +182,12 @@ const TOPICS = [
       ["Nhân viên tổng đài", "Lễ tân"],
       ["Thợ hàn", "Thợ cơ khí"],
       ["Công nhân nhà máy", "Nhân viên kho"],
-      ["Thợ gốm", "Thợ bạc"],
       ["Người giúp việc", "Nhân viên vệ sinh"],
       ["Người đưa thư", "Nhân viên giao hàng"],
       ["Người bán vé", "Thu ngân"],
-      ["Nhà thiên văn học", "Nhà khảo cổ học"],
-      ["Luật sư", "Giám đốc"],
-      ["Người dẫn chương trình", "Hướng dẫn viên du lịch"]
+      ["Người dẫn chương trình", "Hướng dẫn viên du lịch"],
+      ["Thợ làm tóc", "Thợ làm móng"],
+      ["Thủ môn", "Hậu vệ"],
     ]
   },
 
@@ -172,10 +198,8 @@ const TOPICS = [
     pairs: [
       ["Sân bay", "Nhà ga"],
       ["Bệnh viện", "Phòng khám"],
-      ["Trường học", "Thư viện"],
       ["Siêu thị", "Chợ"],
       ["Rạp chiếu phim", "Nhà hát"],
-      ["Bảo tàng", "Sở thú"],
       ["Quán cà phê", "Quán trà sữa"],
       ["Nhà hàng", "Quán nhậu"],
       ["Ngân hàng", "Bưu điện"],
@@ -194,11 +218,12 @@ const TOPICS = [
       ["Bãi đỗ xe", "Trạm xăng"],
       ["Đồn cảnh sát", "Trạm cứu hoả"],
       ["Khách sạn", "Nhà trọ"],
-      ["Rạp xiếc", "Quán karaoke"],
       ["Phòng tập thể hình", "Sân bóng"],
       ["Tiệm sách", "Tiệm hoa"],
       ["Toà án", "Nhà tù"],
-      ["Con sông", "Cái hồ"]
+      ["Con sông", "Cái hồ"],
+      ["Trường mầm non", "Trường tiểu học"],
+      ["Cửa hàng tiện lợi", "Siêu thị mini"],
     ]
   },
 
@@ -239,7 +264,8 @@ const TOPICS = [
       ["Kiến", "Mối"],
       ["Nhện", "Con gián"],
       ["Ve sầu", "Dế mèn"],
-      ["Con lười", "Gấu trúc"]
+      ["Con lười", "Gấu trúc"],
+      ["Cá rô", "Cá lóc"],
     ]
   }
 ];

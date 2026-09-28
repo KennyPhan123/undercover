@@ -43,7 +43,7 @@ cặp đó. Mỗi cặp được chọn theo 5 quy tắc:
    nào là của dân, từ nào là của gián điệp, nên cùng một cặp có thể xuất hiện theo cả hai
    chiều ở các ván khác nhau.
 
-Hiện có **6 chủ đề · 169 cặp · 338 từ**. Xem toàn bộ cặp và lý do chọn ở
+Hiện có **6 chủ đề · 195 cặp · 390 từ**. Xem toàn bộ cặp và lý do chọn ở
 [`docs/cac-cap-tu.md`](docs/cac-cap-tu.md).
 
 Bộ nhớ “cặp đã chơi” cũng hoạt động theo cặp: chơi hết các cặp của một chủ đề mới quay lại.

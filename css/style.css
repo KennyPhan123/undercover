@@ -24,6 +24,7 @@ body{display:flex;justify-content:center;user-select:none;-webkit-user-select:no
 .h1{font-size:24px;font-weight:750;letter-spacing:.1em;margin:0}
 .sub{color:var(--muted);font-size:13.5px;line-height:1.5;margin:10px 0 0}
 .hint{color:var(--muted);font-size:12.5px;line-height:1.5}
+#modeHint{margin:8px 0 0;min-height:1.2em}
 .btn{appearance:none;font:inherit;font-weight:600;font-size:15px;border-radius:15px;
   padding:16px 18px;width:100%;display:flex;align-items:center;justify-content:center;gap:9px;
   cursor:pointer;color:var(--text);background:var(--surface);border:1px solid var(--line);

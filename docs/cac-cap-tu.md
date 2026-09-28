@@ -16,7 +16,7 @@ Chế độ **Gián điệp ẩn** chỉ bốc trong các cặp dưới đây, n
 5. **Cặp đối xứng** — cặp không quy định ai là gián điệp: khi chia từ, game random xem từ nào là của dân,
    từ nào là của gián điệp, nên cùng một cặp có thể xuất hiện theo cả hai chiều.
 
-Tổng cộng: **6 chủ đề · 169 cặp · 338 từ**
+Tổng cộng: **6 chủ đề · 195 cặp · 390 từ**
 
 ## Cách kiểm tra
 
@@ -28,7 +28,7 @@ node tools/check-pairs.js --list   # in toàn bộ cặp
 Bộ kiểm tra tự động bắt: từ dùng 2 lần trong cùng chủ đề, cặp trùng, cặp có từ giống hệt,
 và **nghi là quan hệ cha–con** (một từ nằm ở đầu/cuôi từ kia).
 
-## Đồ ăn & thức uống — 22 cặp
+## Đồ ăn & thức uống — 38 cặp
 
 1. **Sữa chua ↔ Kem** — đều từ sữa, lạnh, ngọt, mềm, ăn bằng thìa, đựng ly/hộp, làm tráng miệng
 2. **Bánh mì ↔ Bánh bao** — đều làm từ bột mì, ăn sáng, có nhân mặn, rẻ, bán nhiều ở đường phố
@@ -52,27 +52,40 @@ và **nghi là quan hệ cha–con** (một từ nằm ở đầu/cuôi từ kia
 20. **Nước ngọt ↔ Nước ép trái cây** — đều là đồ uống lạnh, ngọt, đựng chai/ly, giải khát, bán ở cửa hàng
 21. **Canh ↔ Súp** — đều ở dạng nước, nóng, ăn kèm cơm, dùng thìa, vị thanh nhẹ
 22. **Bún ↔ Mì** — đều là sợi dài, luộc chín, ăn với nước dùng hoặc trộn, bát + đũa, rẻ, ăn mỗi ngày
+23. **Bánh xèo ↔ Bánh khọt** — đều là món/đồ uống quen thuộc, dễ gặp trong bữa ăn hoặc hàng quán; cùng nhóm ẩm thực và đều có cách chế biến, mua bán, thưởng thức phổ biến
+24. **Bánh chưng ↔ Bánh tét** — đều là món/đồ uống quen thuộc, dễ gặp trong bữa ăn hoặc hàng quán; cùng nhóm ẩm thực và đều có cách chế biến, mua bán, thưởng thức phổ biến
+25. **Gà rán ↔ Hamburger** — đều là món/đồ uống quen thuộc, dễ gặp trong bữa ăn hoặc hàng quán; cùng nhóm ẩm thực và đều có cách chế biến, mua bán, thưởng thức phổ biến
+26. **Pizza ↔ Mì Ý** — đều là món/đồ uống quen thuộc, dễ gặp trong bữa ăn hoặc hàng quán; cùng nhóm ẩm thực và đều có cách chế biến, mua bán, thưởng thức phổ biến
+27. **Sữa tươi ↔ Sữa đậu nành** — đều là món/đồ uống quen thuộc, dễ gặp trong bữa ăn hoặc hàng quán; cùng nhóm ẩm thực và đều có cách chế biến, mua bán, thưởng thức phổ biến
+28. **Trà sữa ↔ Sinh tố** — đều là món/đồ uống quen thuộc, dễ gặp trong bữa ăn hoặc hàng quán; cùng nhóm ẩm thực và đều có cách chế biến, mua bán, thưởng thức phổ biến
+29. **Nước lọc ↔ Nước khoáng** — đều là món/đồ uống quen thuộc, dễ gặp trong bữa ăn hoặc hàng quán; cùng nhóm ẩm thực và đều có cách chế biến, mua bán, thưởng thức phổ biến
+30. **Bắp rang ↔ Khoai tây chiên** — đều là món/đồ uống quen thuộc, dễ gặp trong bữa ăn hoặc hàng quán; cùng nhóm ẩm thực và đều có cách chế biến, mua bán, thưởng thức phổ biến
+31. **Dưa hấu ↔ Dứa** — đều là món/đồ uống quen thuộc, dễ gặp trong bữa ăn hoặc hàng quán; cùng nhóm ẩm thực và đều có cách chế biến, mua bán, thưởng thức phổ biến
+32. **Dâu tây ↔ Nho** — đều là món/đồ uống quen thuộc, dễ gặp trong bữa ăn hoặc hàng quán; cùng nhóm ẩm thực và đều có cách chế biến, mua bán, thưởng thức phổ biến
+33. **Bánh kem ↔ Bánh cupcake** — đều là món/đồ uống quen thuộc, dễ gặp trong bữa ăn hoặc hàng quán; cùng nhóm ẩm thực và đều có cách chế biến, mua bán, thưởng thức phổ biến
+34. **Cà phê ↔ Trà** — đều là món/đồ uống quen thuộc, dễ gặp trong bữa ăn hoặc hàng quán; cùng nhóm ẩm thực và đều có cách chế biến, mua bán, thưởng thức phổ biến
+35. **Bánh tráng ↔ Bánh đa** — đều là món/đồ uống quen thuộc, dễ gặp trong bữa ăn hoặc hàng quán; cùng nhóm ẩm thực và đều có cách chế biến, mua bán, thưởng thức phổ biến
+36. **Khoai lang ↔ Khoai tây** — đều là món/đồ uống quen thuộc, dễ gặp trong bữa ăn hoặc hàng quán; cùng nhóm ẩm thực và đều có cách chế biến, mua bán, thưởng thức phổ biến
+37. **Mật ong ↔ Siro** — đều là món/đồ uống quen thuộc, dễ gặp trong bữa ăn hoặc hàng quán; cùng nhóm ẩm thực và đều có cách chế biến, mua bán, thưởng thức phổ biến
+38. **Cá viên ↔ Bò viên** — đều là món/đồ uống quen thuộc, dễ gặp trong bữa ăn hoặc hàng quán; cùng nhóm ẩm thực và đều có cách chế biến, mua bán, thưởng thức phổ biến
 
-## Phương tiện — 16 cặp
+## Phương tiện — 13 cặp
 
-1. **Máy bay ↔ Tên lửa** — đều bay lên trời, rất nhanh, có cánh/đuôi, chạy bằng động cơ, vỏ kim loại
-2. **Ô tô ↔ Xe máy** — đều chạy trên đường, có động cơ, có bánh, chở người, cần xăng và bằng lái
-3. **Xe buýt ↔ Tàu điện ngầm** — đều là phương tiện công cộng, chở được đông người, chạy tuyến cố định, mua vé
-4. **Tàu hoả ↔ Tàu thuỷ** — đều chở khách đường dài, có bến/ga, to, bán vé, chở được hàng trăm người, chạy theo giờ
-5. **Xe đạp ↔ Ván trượt** — đều không động cơ, 2 bánh, tự đạy/dùng chân đẩy, rẻ, chậm, đi quãng ngắn
-6. **Trực thăng ↔ Khí cầu** — đều bay được, không có cánh cứng, chở người, dùng để ngắm cảnh, phụ thuộc thời tiết
-7. **Xe tải ↔ Máy kéo** — đều là xe lớn chạy dầu, dùng để chở/kéo, chạy chậm, cần tài xế chuyên nghiệp
-8. **Xe cứu thương ↔ Xe cứu hoả** — đều là xe khẩn cấp, có còi và đèn nháy, chạy gấp đến hiện trường, trắng/đỏ
-9. **Xe tang ↔ Xe bọc thép** — đều là xe quân sự, có giáp thép, mang vũ khí, dùng trong chiến tranh
-10. **Xe lăn ↔ Nạng** — đều là dụng cụ hỗ trợ đi lại, dùng cho người bị thương/khuyết tật, khung kim loại, di chuyển chậm
-11. **Xe ngựa ↔ Xe bò** — đều là xe kéo bằng súc vật, 4 bánh, không động cơ, chạy chậm, quen ở nông thôn
-12. **Tàu ngầm ↔ Tàu khu trục** — đều là tàu chiến, sơn xám, mang vũ khí, có nhiều thủy thủ, hoạt động trên biển
-13. **Thuyền buồm ↔ Ca nô** — đều là thuyền nhỏ đi trên sông/biển, chở ít người, cần áo phao, dùng để đi lại và giải trí
-14. **Diều ↔ Máy bay giấy** — đều bay được, không động cơ, làm từ giấy, phải thả/cầm bằng tay, bay nhờ gió ở chỗ trống
-15. **Xe cẩu ↔ Xe ủi** — đều là máy công trình, to và nặng, thường sơn vàng, chạy chậm, làm việc ở công trường
-16. **Tàu vũ trụ ↔ Trạm vũ trụ** — đều hoạt động ngoài vũ trụ, có phi hành gia, bay trên quỹ đạo, gồm nhiều module, công nghệ cao
+1. **Ô tô ↔ Xe máy** — đều chạy trên đường, có động cơ, có bánh, chở người, cần xăng và bằng lái
+2. **Xe buýt ↔ Tàu điện ngầm** — đều là phương tiện công cộng, chở được đông người, chạy tuyến cố định, mua vé
+3. **Xe tải ↔ Máy kéo** — đều là xe lớn chạy dầu, dùng để chở/kéo, chạy chậm, cần tài xế chuyên nghiệp
+4. **Xe cứu thương ↔ Xe cứu hoả** — đều là xe khẩn cấp, có còi và đèn nháy, chạy gấp đến hiện trường, trắng/đỏ
+5. **Xe lăn ↔ Nạng** — đều là dụng cụ hỗ trợ đi lại, dùng cho người bị thương/khuyết tật, khung kim loại, di chuyển chậm
+6. **Xe ngựa ↔ Xe bò** — đều là xe kéo bằng súc vật, 4 bánh, không động cơ, chạy chậm, quen ở nông thôn
+7. **Tàu ngầm ↔ Tàu khu trục** — đều là tàu chiến, sơn xám, mang vũ khí, có nhiều thủy thủ, hoạt động trên biển
+8. **Thuyền buồm ↔ Ca nô** — đều là thuyền nhỏ đi trên sông/biển, chở ít người, cần áo phao, dùng để đi lại và giải trí
+9. **Diều ↔ Máy bay giấy** — đều bay được, không động cơ, làm từ giấy, phải thả/cầm bằng tay, bay nhờ gió ở chỗ trống
+10. **Xe cẩu ↔ Xe ủi** — đều là máy công trình, to và nặng, thường sơn vàng, chạy chậm, làm việc ở công trường
+11. **Xe bán tải ↔ Xe SUV** — đều là phương tiện quen thuộc, dùng để di chuyển hoặc chở người/hàng; cần điều khiển theo tuyến/đường đi và thường gặp trong đời sống
+12. **Xe điện ↔ Xe hybrid** — đều là phương tiện quen thuộc, dùng để di chuyển hoặc chở người/hàng; cần điều khiển theo tuyến/đường đi và thường gặp trong đời sống
+13. **Xe trượt scooter ↔ Ván trượt** — đều là phương tiện quen thuộc, dùng để di chuyển hoặc chở người/hàng; cần điều khiển theo tuyến/đường đi và thường gặp trong đời sống
 
-## Đồ vật — 32 cặp
+## Đồ vật — 46 cặp
 
 1. **Bàn chải đánh răng ↔ Kem đánh răng** — đều là đồ đánh răng, để trong nhà tắm, dùng cùng nhau, mùi bạc hà, mỗi sáng và tối
 2. **Cái bàn ↔ Cái ghế** — đều là đồ nội thất, 4 chân, làm bằng gỗ/kim loại, đặt trong phòng, thường mua cùng nhau
@@ -106,8 +119,22 @@ và **nghi là quan hệ cha–con** (một từ nằm ở đầu/cuôi từ kia
 30. **Đàn ghi-ta ↔ Sáo trúc** — đều là nhạc cụ, cầm trên tay, phát ra giai điệu, dễ học, hay được dạy cho trẻ em
 31. **Bình nước ↔ Cái ly** — đều là đồ đựng nước uống, bằng thủy tinh/nhựa, đặt trên bàn, phải rửa, dùng để rót
 32. **Ổ cắm điện ↔ Công tắc điện** — đều là đồ điện gắn trên tường, bằng nhựa trắng, điều khiển dòng điện, có ở mỗi phòng
+33. **Tivi ↔ Máy chiếu** — đều là vật dụng quen thuộc trong gia đình/trường học; có công dụng thực tế, thường được cất giữ và sử dụng hằng ngày
+34. **Laptop ↔ Máy tính bàn** — đều là vật dụng quen thuộc trong gia đình/trường học; có công dụng thực tế, thường được cất giữ và sử dụng hằng ngày
+35. **Bàn phím ↔ Chuột máy tính** — đều là vật dụng quen thuộc trong gia đình/trường học; có công dụng thực tế, thường được cất giữ và sử dụng hằng ngày
+36. **Đồng hồ đeo tay ↔ Đồng hồ báo thức** — đều là vật dụng quen thuộc trong gia đình/trường học; có công dụng thực tế, thường được cất giữ và sử dụng hằng ngày
+37. **Kính mắt ↔ Kính râm** — đều là vật dụng quen thuộc trong gia đình/trường học; có công dụng thực tế, thường được cất giữ và sử dụng hằng ngày
+38. **Cốc ↔ Bát** — đều là vật dụng quen thuộc trong gia đình/trường học; có công dụng thực tế, thường được cất giữ và sử dụng hằng ngày
+39. **Nồi cơm điện ↔ Ấm siêu tốc** — đều là vật dụng quen thuộc trong gia đình/trường học; có công dụng thực tế, thường được cất giữ và sử dụng hằng ngày
+40. **Tủ sách ↔ Kệ tivi** — đều là vật dụng quen thuộc trong gia đình/trường học; có công dụng thực tế, thường được cất giữ và sử dụng hằng ngày
+41. **Bóng đèn ↔ Đèn ngủ** — đều là vật dụng quen thuộc trong gia đình/trường học; có công dụng thực tế, thường được cất giữ và sử dụng hằng ngày
+42. **Khăn mặt ↔ Khăn tắm** — đều là vật dụng quen thuộc trong gia đình/trường học; có công dụng thực tế, thường được cất giữ và sử dụng hằng ngày
+43. **Máy in ↔ Máy photocopy** — đều là vật dụng quen thuộc trong gia đình/trường học; có công dụng thực tế, thường được cất giữ và sử dụng hằng ngày
+44. **Nồi chiên không dầu ↔ Lò vi sóng** — đều là vật dụng quen thuộc trong gia đình/trường học; có công dụng thực tế, thường được cất giữ và sử dụng hằng ngày
+45. **Bàn học ↔ Bàn làm việc** — đều là vật dụng quen thuộc trong gia đình/trường học; có công dụng thực tế, thường được cất giữ và sử dụng hằng ngày
+46. **Bình giữ nhiệt ↔ Bình thủy** — đều là vật dụng quen thuộc trong gia đình/trường học; có công dụng thực tế, thường được cất giữ và sử dụng hằng ngày
 
-## Nghề nghiệp — 37 cặp
+## Nghề nghiệp — 36 cặp
 
 1. **Bác sĩ ↔ Y tá** — đều làm ở bệnh viện, mặc áo trắng, chăm sóc bệnh nhân, có kiến thức y khoa, làm theo ca
 2. **Nha sĩ ↔ Dược sĩ** — đều là nghề y, mặc áo blouse trắng, làm ở cơ sở y tế, tư vấn cho bệnh nhân, phải học nhiều năm
@@ -139,47 +166,45 @@ và **nghi là quan hệ cha–con** (một từ nằm ở đầu/cuôi từ kia
 28. **Nhân viên tổng đài ↔ Lễ tân** — đều là nghề tiếp xúc khách hàng, ngồi tại bàn làm việc, nghe điện/gặp gỡ khách, nói nhiều cả ngày
 29. **Thợ hàn ↔ Thợ cơ khí** — đều là nghề gia công kim loại, làm ở xưởng/nhà máy, tiếp xúc tia lửa và máy móc, cần đồ bảo hộ
 30. **Công nhân nhà máy ↔ Nhân viên kho** — đều là công nhân công nghiệp, mặc đồng phục, làm theo ca, làm ở nhà máy/kho, công việc lặp lại
-31. **Thợ gốm ↔ Thợ bạc** — đều là nghề thủ công, tạo ra sản phẩm bằng tay, làm ở xưởng riêng, bán sản phẩm tự làm, cần đôi tay khéo
-32. **Người giúp việc ↔ Nhân viên vệ sinh** — đều là nghề dọn dẹp, làm ở nhà/toà nhà, mặc tạp dề, dùng chổi/cây lau, tính công theo giờ
-33. **Người đưa thư ↔ Nhân viên giao hàng** — đều đi giao đồ đến từng nhà, mang túi/ba lô, chạy quanh phố, chạy tuyến mỗi ngày, giao thư/bưu kiện
-34. **Người bán vé ↔ Thu ngân** — đều làm việc ở quầy, xử lý tiền mặt, ngồi tại quầy giao dịch, phục vụ hàng người xếp hàng
-35. **Nhà thiên văn học ↔ Nhà khảo cổ học** — đều là nhà khoa học nghiên cứu, khảo sát bầu trời/quá khứ, làm ở đại học, dùng thiết bị chuyên dụng, công bố kết quả
-36. **Luật sư ↔ Giám đốc** — đều là nghề văn phòng, mặc vest, thu nhập cao, tham gia họp hành, xử lý chứng từ/quyết định quan trọng
-37. **Người dẫn chương trình ↔ Hướng dẫn viên du lịch** — đều là nghề nói trước đám đông, dùng micro, vừa thông tin vừa giải trí, đi nhiều nơi, cần ứng biến
+31. **Người giúp việc ↔ Nhân viên vệ sinh** — đều là nghề dọn dẹp, làm ở nhà/toà nhà, mặc tạp dề, dùng chổi/cây lau, tính công theo giờ
+32. **Người đưa thư ↔ Nhân viên giao hàng** — đều đi giao đồ đến từng nhà, mang túi/ba lô, chạy quanh phố, chạy tuyến mỗi ngày, giao thư/bưu kiện
+33. **Người bán vé ↔ Thu ngân** — đều làm việc ở quầy, xử lý tiền mặt, ngồi tại quầy giao dịch, phục vụ hàng người xếp hàng
+34. **Người dẫn chương trình ↔ Hướng dẫn viên du lịch** — đều là nghề nói trước đám đông, dùng micro, vừa thông tin vừa giải trí, đi nhiều nơi, cần ứng biến
+35. **Thợ làm tóc ↔ Thợ làm móng** — đều là nghề phổ biến, cần kỹ năng chuyên môn và phục vụ một nhu cầu cụ thể của cộng đồng; thường làm việc với người hoặc thiết bị
+36. **Thủ môn ↔ Hậu vệ** — đều là nghề phổ biến, cần kỹ năng chuyên môn và phục vụ một nhu cầu cụ thể của cộng đồng; thường làm việc với người hoặc thiết bị
 
-## Địa điểm — 29 cặp
+## Địa điểm — 28 cặp
 
 1. **Sân bay ↔ Nhà ga** — đều là trung tâm giao thông lớn, có toà nhà ga, bảng giờ tàu/bay, bán vé, đông người, có taxi bên ngoài
 2. **Bệnh viện ↔ Phòng khám** — đều là nơi khám chữa bệnh, sơn trắng, có mùi thuốc, phòng chờ, bác sĩ và bệnh nhân
-3. **Trường học ↔ Thư viện** — đều là nơi học tập, yên lặng, có bàn ghế và sách, có học sinh/thủ thư, nằm trong khu dân
-4. **Siêu thị ↔ Chợ** — đều là nơi mua đồ ăn/đồ dùng, có quầy/gian hàng, đông người, có giá tiền, thu ngân, đi mỗi ngày
-5. **Rạp chiếu phim ↔ Nhà hát** — đều là nơi giải trí, có sân khấu/màn hình, ghế ngồi xếp hàng, bán vé, bên trong tối, có suất diễn
-6. **Bảo tàng ↔ Sở thú** — đều là nơi đi chơi của gia đình, bán vé, trưng bày hiện vật/động vật, mang tính giáo dục, đi cuối tuần
-7. **Quán cà phê ↔ Quán trà sữa** — đều là quán đồ uống, bàn ghế nhỏ, có menu, chỗ tụ tập bạn bè, có nhân viên phục vụ, ở trong phố
-8. **Nhà hàng ↔ Quán nhậu** — đều là nơi ăn uống bên ngoài, có bàn ghế và menu, có nhân viên phục vụ, tính tiền sau ăn, tụ tập nhóm
-9. **Ngân hàng ↔ Bưu điện** — đều là văn phòng dịch vụ công, người đến xếp hàng, làm việc tại quầy, có nhân viên, giấy tờ thủ tục
-10. **Tiệm cắt tóc ↔ Tiệm giặt ủi** — đều là tiệm dịch vụ nhỏ, phục vụ từng khách, khách ngồi chờ, trò chuyện, nằm trên phố, đến là làm liền
-11. **Cửa hàng điện thoại ↔ Cửa hàng giày** — đều là cửa hàng bán lẻ, có kệ trưng bày, có nhân viên bán hàng, nằm trên phố mua sắm
-12. **Sân vận động ↔ Nhà thi đấu** — đều là nơi tổ chức thể thao, đón đông khán giả, có trận đấu/sự kiện, bán vé, có khán đài, đèn sáng
-13. **Hồ bơi ↔ Bãi biển** — đều là nơi bơi, có nước, đông vào mùa hè, mang khăn, đông người, có cứu hộ, mặc đồ bơi
-14. **Công viên ↔ Khu vui chơi** — đều là nơi giải trí ngoài trời, có trẻ em, gia đình đi cuối tuần, không gian xanh, giá rẻ/miễn phí
-15. **Rừng ↔ Núi** — đều là nơi thiên nhiên, đi bộ leo trèo, không khí trong lành, xa thành phố, có cây/đá, cắm trại được
-16. **Hang động ↔ Thác nước** — đều là cảnh quan thiên nhiên, điểm du lịch, nằm trong vùng núi, có khách tham quan, liên quan nước/đá
-17. **Chùa ↔ Nhà thờ** — đều là nơi thờ tự tôn giáo, yên lặng, có hương/nến, người đến cầu nguyện, kiến trúc đặc trưng
-18. **Khu cắm trại ↔ Khu nghỉ dưỡng** — đều là nơi nghỉ ngơi, ở qua đêm, có lều/phòng, gần thiên nhiên, đi theo gia đình/nhóm
-19. **Bến tàu ↔ Bến xe** — đều là bến giao thông, có sân đợi và bán vé, chỗ chờ, tàu/xe ra vào, đông người
-20. **Nhà máy ↔ Nhà kho** — đều là toà nhà công nghiệp lớn, có công nhân, máy móc/thùng hàng, nằm ngoài thành phố, xe tải ra vào
-21. **Nông trại ↔ Vườn trái cây** — đều là đất canh tác, cây trồng mọc thành hàng, nông dân làm việc, ngoài thành phố, hái/tham quan được
-22. **Bãi đỗ xe ↔ Trạm xăng** — đều là nơi liên quan đến xe hơi, mặt đường bê tông, xe ra vào liên tục, phải trả tiền, có nhân viên
-23. **Đồn cảnh sát ↔ Trạm cứu hoả** — đều là trạm khẩn cấp, người mặc đồng phục, xe đậu bên ngoài, nhận cuộc gọi, nằm trong khu dân
-24. **Khách sạn ↔ Nhà trọ** — đều là nơi ở tạm thời, có phòng, trả tiền theo đêm, thuê, có giường và chìa khoá
-25. **Rạp xiếc ↔ Quán karaoke** — đều là nơi giải trí, có biểu diễn, thu tiền theo vé/phòng, đi theo nhóm bạn, ồn ào, đi chơi buổi tối
-26. **Phòng tập thể hình ↔ Sân bóng** — đều là nơi tập thể thao, có dụng cụ, người đến tập đều đặn, đổ mồ hôi, có chỗ thay đồ
-27. **Tiệm sách ↔ Tiệm hoa** — đều là tiệm nhỏ, có mùi dễ chịu, khách ngắm/chọn, mua làm quà, yên lặng, nằm trên phố
-28. **Toà án ↔ Nhà tù** — đều là nơi gắn với tội phạm, có người canh gác, phòng giam, không khí nghiêm trang, liên quan công lý
-29. **Con sông ↔ Cái hồ** — đều là vùng nước tự nhiên, nước ngọt, có thuyền/câu cá, nằm gần khu dân, bơi/ngắm cảnh được
+3. **Siêu thị ↔ Chợ** — đều là nơi mua đồ ăn/đồ dùng, có quầy/gian hàng, đông người, có giá tiền, thu ngân, đi mỗi ngày
+4. **Rạp chiếu phim ↔ Nhà hát** — đều là nơi giải trí, có sân khấu/màn hình, ghế ngồi xếp hàng, bán vé, bên trong tối, có suất diễn
+5. **Quán cà phê ↔ Quán trà sữa** — đều là quán đồ uống, bàn ghế nhỏ, có menu, chỗ tụ tập bạn bè, có nhân viên phục vụ, ở trong phố
+6. **Nhà hàng ↔ Quán nhậu** — đều là nơi ăn uống bên ngoài, có bàn ghế và menu, có nhân viên phục vụ, tính tiền sau ăn, tụ tập nhóm
+7. **Ngân hàng ↔ Bưu điện** — đều là văn phòng dịch vụ công, người đến xếp hàng, làm việc tại quầy, có nhân viên, giấy tờ thủ tục
+8. **Tiệm cắt tóc ↔ Tiệm giặt ủi** — đều là tiệm dịch vụ nhỏ, phục vụ từng khách, khách ngồi chờ, trò chuyện, nằm trên phố, đến là làm liền
+9. **Cửa hàng điện thoại ↔ Cửa hàng giày** — đều là cửa hàng bán lẻ, có kệ trưng bày, có nhân viên bán hàng, nằm trên phố mua sắm
+10. **Sân vận động ↔ Nhà thi đấu** — đều là nơi tổ chức thể thao, đón đông khán giả, có trận đấu/sự kiện, bán vé, có khán đài, đèn sáng
+11. **Hồ bơi ↔ Bãi biển** — đều là nơi bơi, có nước, đông vào mùa hè, mang khăn, đông người, có cứu hộ, mặc đồ bơi
+12. **Công viên ↔ Khu vui chơi** — đều là nơi giải trí ngoài trời, có trẻ em, gia đình đi cuối tuần, không gian xanh, giá rẻ/miễn phí
+13. **Rừng ↔ Núi** — đều là nơi thiên nhiên, đi bộ leo trèo, không khí trong lành, xa thành phố, có cây/đá, cắm trại được
+14. **Hang động ↔ Thác nước** — đều là cảnh quan thiên nhiên, điểm du lịch, nằm trong vùng núi, có khách tham quan, liên quan nước/đá
+15. **Chùa ↔ Nhà thờ** — đều là nơi thờ tự tôn giáo, yên lặng, có hương/nến, người đến cầu nguyện, kiến trúc đặc trưng
+16. **Khu cắm trại ↔ Khu nghỉ dưỡng** — đều là nơi nghỉ ngơi, ở qua đêm, có lều/phòng, gần thiên nhiên, đi theo gia đình/nhóm
+17. **Bến tàu ↔ Bến xe** — đều là bến giao thông, có sân đợi và bán vé, chỗ chờ, tàu/xe ra vào, đông người
+18. **Nhà máy ↔ Nhà kho** — đều là toà nhà công nghiệp lớn, có công nhân, máy móc/thùng hàng, nằm ngoài thành phố, xe tải ra vào
+19. **Nông trại ↔ Vườn trái cây** — đều là đất canh tác, cây trồng mọc thành hàng, nông dân làm việc, ngoài thành phố, hái/tham quan được
+20. **Bãi đỗ xe ↔ Trạm xăng** — đều là nơi liên quan đến xe hơi, mặt đường bê tông, xe ra vào liên tục, phải trả tiền, có nhân viên
+21. **Đồn cảnh sát ↔ Trạm cứu hoả** — đều là trạm khẩn cấp, người mặc đồng phục, xe đậu bên ngoài, nhận cuộc gọi, nằm trong khu dân
+22. **Khách sạn ↔ Nhà trọ** — đều là nơi ở tạm thời, có phòng, trả tiền theo đêm, thuê, có giường và chìa khoá
+23. **Phòng tập thể hình ↔ Sân bóng** — đều là nơi tập thể thao, có dụng cụ, người đến tập đều đặn, đổ mồ hôi, có chỗ thay đồ
+24. **Tiệm sách ↔ Tiệm hoa** — đều là tiệm nhỏ, có mùi dễ chịu, khách ngắm/chọn, mua làm quà, yên lặng, nằm trên phố
+25. **Toà án ↔ Nhà tù** — đều là nơi gắn với tội phạm, có người canh gác, phòng giam, không khí nghiêm trang, liên quan công lý
+26. **Con sông ↔ Cái hồ** — đều là vùng nước tự nhiên, nước ngọt, có thuyền/câu cá, nằm gần khu dân, bơi/ngắm cảnh được
+27. **Trường mầm non ↔ Trường tiểu học** — đều là địa điểm công cộng quen thuộc, mọi người có thể đến để sử dụng dịch vụ hoặc tham gia hoạt động
+28. **Cửa hàng tiện lợi ↔ Siêu thị mini** — đều là địa điểm công cộng quen thuộc, mọi người có thể đến để sử dụng dịch vụ hoặc tham gia hoạt động
 
-## Động vật — 33 cặp
+## Động vật — 34 cặp
 
 1. **Chó ↔ Mèo** — đều là thú cưng phổ biến, 4 chân, có lông, sống trong nhà, ăn thịt, được con người yêu quý
 2. **Hổ ↔ Sư tử** — đều là họ mèo lớn, lông có hoa văn, gầm được, săn mồi, sống hoang dã/sở thú, nguy hiểm
@@ -214,4 +239,5 @@ và **nghi là quan hệ cha–con** (một từ nằm ở đầu/cuôi từ kia
 31. **Nhện ↔ Con gián** — đều là động vật nhỏ trong nhà, trốn góc tối, di chuyển nhanh, nhiều chân, bị mọi người ghét
 32. **Ve sầu ↔ Dế mèn** — đều là côn trùng mùa hè, hay thấy trên cây/đồng, kêu to, nhảy/bay được, gắn với miền quê
 33. **Con lười ↔ Gấu trúc** — đều leo cây chậm rãi, ăn lá/tre, hay thấy ở sở thú, dễ thương, đang bị đe doạ
+34. **Cá rô ↔ Cá lóc** — đều là động vật quen thuộc, có đặc điểm nhận diện riêng; thường được biết đến qua đời sống, sách/phim hoặc sở thú
 
