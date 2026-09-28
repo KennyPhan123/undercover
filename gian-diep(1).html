@@ -1,0 +1,1746 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#07080b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Gián Điệp · Quản trò</title>
+<style>
+:root{
+  --bg:#F6F3EF; --surface:#FFFFFF; --surface2:#F1ECE6; --surface3:#E7E0D8;
+  --line:#EAE3DB; --text:#3B3542; --muted:#8D8593; --muted2:#B5AEBb;
+  --rose:#E7A8AC; --rose-deep:#C77F86; --rose-ink:#8E4A52; --rose-soft:#FBEEEE;
+  --sage:#8FBF9F; --sage-ink:#3F7F63; --sage-soft:#EDF4EF;
+  --r:18px; --ease:cubic-bezier(.22,.9,.28,1);
+  --shadow:0 1px 2px rgba(59,53,66,.05), 0 12px 26px -22px rgba(59,53,66,.28);
+  --safe-b:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
+  overscroll-behavior:none;-webkit-font-smoothing:antialiased}
+body{display:flex;justify-content:center;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+#app{position:relative;z-index:1;width:100%;max-width:470px;height:100vh;height:100dvh;overflow:hidden}
+
+/* ---------- screens ---------- */
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;
+  padding:22px 18px calc(16px + var(--safe-b));opacity:0;pointer-events:none;
+  transform:translateY(8px);transition:opacity .26s var(--ease),transform .26s var(--ease)}
+.screen.active{opacity:1;pointer-events:auto;transform:none}
+
+/* ---------- generic ---------- */
+.h1{font-size:24px;font-weight:750;letter-spacing:.1em;margin:0}
+.sub{color:var(--muted);font-size:13.5px;line-height:1.5;margin:10px 0 0}
+.hint{color:var(--muted);font-size:12.5px;line-height:1.5}
+.btn{appearance:none;font:inherit;font-weight:600;font-size:15px;border-radius:15px;
+  padding:16px 18px;width:100%;display:flex;align-items:center;justify-content:center;gap:9px;
+  cursor:pointer;color:var(--text);background:var(--surface);border:1px solid var(--line);
+  transition:transform .12s var(--ease),background .2s,border-color .2s,opacity .2s}
+.btn:active{transform:scale(.985)}
+.btn.primary{background:#F0C9CB;border-color:#EBBFC2;color:#7A3B43}
+.btn.danger{background:var(--rose-soft);border-color:#F0CFD2;color:var(--rose-ink)}
+.btn.text{background:none;border:0;color:var(--muted);font-weight:500;font-size:14px;padding:12px}
+.btn.text:active{background:none}
+.btn:disabled{opacity:.4;pointer-events:none}
+.foot{display:flex;flex-direction:column;gap:10px;padding-top:12px}
+.rowflex{display:flex;align-items:center;gap:12px}
+.spacer{flex:1}
+.iconbtn{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--surface);
+  border:1px solid var(--line);color:var(--text);cursor:pointer;flex:none}
+.iconbtn:active{transform:scale(.95)}
+svg{display:block}
+
+/* ---------- 1. người chơi ---------- */
+.head{padding-top:6px}
+.brand{display:flex;align-items:center;gap:9px}
+.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--rose)}
+.list-wrap{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;margin:20px -4px 0;
+  padding:0 4px 4px;scrollbar-width:none}
+.list-wrap::-webkit-scrollbar{display:none}
+.row{position:relative;border-radius:15px;background:var(--rose);margin-bottom:9px;
+  overflow:hidden;touch-action:pan-y;will-change:transform}
+.row-front{position:relative;z-index:2;display:flex;align-items:center;gap:12px;height:62px;
+  padding:0 6px 0 14px;background:var(--surface);border:1px solid var(--line);
+  border-radius:15px;touch-action:pan-y;will-change:transform;box-shadow:var(--shadow)}
+.row-del{position:absolute;inset:0;z-index:1;display:flex;align-items:center;
+  color:#7A3B43;font-weight:650;font-size:14px}
+.row-del .dside{display:none;align-items:center;gap:9px;padding:0 18px}
+.row-del .dside.left{margin-right:auto}     /* chỉ hiện 1 nhãn thì vẫn nằm đúng phía của nó */
+.row-del .dside.right{margin-left:auto}
+.row.sw-right .row-del .dside.left{display:flex}
+.row.sw-left  .row-del .dside.right{display:flex}
+.row.dragging{z-index:9}
+.row.dragging .row-front{border-color:var(--rose);box-shadow:0 16px 30px -20px rgba(59,53,66,.4)}
+.idx{width:26px;height:26px;border-radius:9px;background:var(--surface2);color:var(--muted);
+  font-size:12.5px;font-weight:700;display:grid;place-items:center;flex:none}
+.pname{font-size:17px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.handle{width:46px;height:46px;margin-left:auto;display:grid;place-items:center;color:var(--muted2);
+  touch-action:none;cursor:grab;flex:none}
+.handle:active{cursor:grabbing}
+.empty{color:var(--muted2);font-size:14px;text-align:center;padding:34px 12px}
+.addrow{display:flex;gap:9px;align-items:center;margin-top:6px}
+.addrow[hidden]{display:none}
+.addrow input{flex:1;height:56px;border-radius:14px;background:var(--surface);color:var(--text);
+  border:1px solid var(--rose);padding:0 16px;font-size:17px;font-family:inherit;outline:none}
+.addrow input::placeholder{color:var(--muted2)}
+
+/* ---------- 2. cài đặt ---------- */
+.sec{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;
+  margin-top:14px;box-shadow:var(--shadow)}
+.sec .label{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}
+.chip{padding:11px 16px;border-radius:12px;background:var(--surface2);border:1px solid transparent;
+  font-size:14.5px;font-weight:600;color:var(--text);cursor:pointer;transition:.18s var(--ease)}
+.chip:active{transform:scale(.96)}
+.chip.on{background:#F0C9CB;border-color:#EBBFC2;color:#7A3B43}
+.stepper{display:flex;align-items:center;justify-content:space-between;margin-top:13px;gap:12px}
+.stepbtn{width:56px;height:56px;border-radius:15px;background:var(--surface2);border:1px solid transparent;
+  color:var(--text);font-size:24px;font-weight:600;display:grid;place-items:center;cursor:pointer}
+.stepbtn:active{transform:scale(.95)}
+.stepbtn:disabled{opacity:.35;pointer-events:none}
+.stepval{font-size:34px;font-weight:750;font-variant-numeric:tabular-nums}
+
+/* ---------- 3. chia từ ---------- */
+.deal-top{display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:13.5px;font-weight:600}
+.stage{position:relative;flex:1;margin:16px 0 14px;touch-action:none}
+.panel{position:absolute;inset:0;border-radius:26px;background:var(--rose-soft);
+  border:1px solid #F0D8DA;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:14px;padding:24px;text-align:center;overflow:hidden}
+.panel .pword{font-size:clamp(40px,13vw,60px);font-weight:750;letter-spacing:-.01em;line-height:1.1;
+  color:var(--rose-ink);text-wrap:balance}
+.panel .ptopic{font-size:15px;font-weight:700;color:var(--text);margin-top:-4px}
+.panel .pnote{font-size:13px;color:var(--muted);max-width:250px;line-height:1.45}
+.card{position:absolute;inset:0;border-radius:26px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:16px;padding:24px;text-align:center;
+  background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);
+  will-change:transform;cursor:grab}
+.card .cname{font-size:clamp(36px,12vw,56px);font-weight:750;line-height:1.05;text-wrap:balance;max-width:100%;
+  overflow-wrap:anywhere}
+.card .chint{position:absolute;bottom:22px;left:0;right:0;display:grid;place-items:center;color:var(--muted2)}
+.card .cup{animation:bob 1.9s var(--ease) infinite}
+@keyframes bob{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(-6px);opacity:.95}}
+
+/* ---------- 4. chơi ---------- */
+.game-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.pill{font-size:12.5px;font-weight:650;color:var(--muted);background:var(--surface);border:1px solid var(--line);
+  padding:8px 13px;border-radius:11px}
+.game-mid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+.ringwrap{position:relative;width:min(58vw,250px);aspect-ratio:1}
+.ring{width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:7;stroke-linecap:round}
+.ring .bgc{stroke:#EDE7E0}
+.ring .fgc{stroke:var(--rose);transition:stroke .3s}
+.timer-wrap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.timer{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:clamp(48px,16vw,66px);
+  font-weight:600;letter-spacing:.01em;font-variant-numeric:tabular-nums}
+.timer.low{color:var(--rose-ink)}
+.tlabel{font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted2)}
+/* danh sách người chơi trong lúc chơi: ai bị loại thì gạch tên + dấu × */
+.game-roster{width:100%;display:flex;flex-wrap:wrap;gap:7px;justify-content:center;align-content:flex-start;
+  max-height:34vh;overflow-y:auto;scrollbar-width:none;padding:2px}
+.game-roster::-webkit-scrollbar{display:none}
+.pchip{font-size:13px;color:var(--text);background:var(--surface);border:1px solid var(--line);
+  padding:8px 12px;border-radius:10px;font-weight:650;display:inline-flex;align-items:center;gap:7px}
+.pchip.out{opacity:.5;background:var(--surface2);border-color:#E4DCD4}   /* bị loại: chỉ mờ đi */
+.prole{display:none;font-size:10px;font-weight:750;letter-spacing:.05em;text-transform:uppercase;
+  padding:3px 6px;border-radius:7px;background:var(--sage-soft);color:var(--sage-ink)}
+.pchip.out .prole{display:inline}
+.prole.spy{background:var(--rose-soft);color:var(--rose-ink)}
+
+/* ---------- overlay ---------- */
+.overlay{position:absolute;inset:0;z-index:40;display:flex;align-items:flex-end;justify-content:center;
+  background:rgba(246,243,239,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  opacity:0;pointer-events:none;transition:opacity .24s var(--ease);padding:18px 18px calc(18px + var(--safe-b))}
+.overlay.open{opacity:1;pointer-events:auto}
+.sheet{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:22px;
+  box-shadow:0 -10px 40px -24px rgba(59,53,66,.35);transform:translateY(16px);transition:transform .28s var(--ease)}
+.overlay.open .sheet{transform:none}
+.sheet .stitle{font-size:20px;font-weight:750;margin:0 0 6px}
+.sheet .stext{color:var(--muted);font-size:14px;line-height:1.5;margin:0 0 18px}
+.sheet .acts{display:flex;flex-direction:column;gap:10px}
+
+/* ---------- kết quả bỏ phiếu: giữa màn hình, to, xanh = đúng / đỏ = sai ---------- */
+.overlay.verdict{flex-direction:column;align-items:center;justify-content:center;background:var(--rose-soft)}
+.overlay.verdict.ok{background:var(--sage-soft)}
+.overlay.verdict .vwrap{flex:1;width:100%;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:10px}
+.vbadge{width:clamp(92px,28vw,124px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;color:#fff;
+  background:var(--rose-deep);transform:scale(.86);transition:transform .34s cubic-bezier(.2,1.4,.4,1)}
+.overlay.open .vbadge{transform:none}
+.overlay.verdict.ok .vbadge{background:var(--sage)}
+.overlay.verdict .vicon svg{width:clamp(46px,15vw,64px);height:auto}
+.vname{font-size:clamp(21px,7vw,30px);font-weight:750;text-align:center;max-width:100%;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vword{font-size:clamp(34px,11.5vw,54px);font-weight:800;line-height:1.14;letter-spacing:.01em;
+  text-align:center;text-wrap:balance;color:var(--rose-ink)}
+.overlay.verdict.ok .vword{color:var(--sage-ink)}
+.vacts{width:100%;max-width:430px;display:flex;flex-direction:column;gap:10px;padding-top:18px}
+
+/* ---------- vote ---------- */
+.vote-list{flex:1;overflow-y:auto;margin:10px -4px 0;padding:0 4px 4px;scrollbar-width:none}
+.vote-list::-webkit-scrollbar{display:none}
+.vrow{position:relative;display:flex;align-items:center;gap:12px;height:62px;padding:0 14px;margin-bottom:9px;
+  background:var(--surface);border:1px solid var(--line);border-radius:15px;cursor:pointer;
+  transition:border-color .18s,background .18s,transform .1s var(--ease)}
+.vrow:active{transform:scale(.99)}
+.vrow.hasvotes{border-color:#EADBD8;background:#FDF7F6}
+.vrow.lead{border-color:var(--rose);background:var(--rose-soft)}
+.vname{font-size:17px;font-weight:650}
+.vcount{margin-left:auto;min-width:34px;height:34px;border-radius:11px;background:var(--surface2);
+  color:var(--muted2);font-weight:700;font-size:16px;display:grid;place-items:center;transition:.18s}
+.vcount.on{background:#F0C9CB;color:#7A3B43}
+.vbars{position:absolute;left:0;right:0;bottom:0;height:3px;border-radius:0 0 15px 15px;background:var(--rose);
+  transform-origin:left;transform:scaleX(0);transition:transform .25s var(--ease)}
+.progressbar{height:5px;border-radius:99px;background:var(--surface3);overflow:hidden;margin-top:14px}
+.progressbar i{display:block;height:100%;background:var(--rose);width:0;transition:width .25s var(--ease)}
+
+/* ---------- kết thúc ---------- */
+/* màn kết thúc không công bố ai thắng — để nhóm tự đoán từ bên ngoài */
+.wordgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.wordgrid.single{grid-template-columns:1fr}
+.wcard[hidden]{display:none}
+.wcard{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:14px;
+  box-shadow:var(--shadow);min-height:86px;display:flex;flex-direction:column;justify-content:center}
+.wcard.reveal{cursor:pointer}
+.wcard.reveal:active{transform:scale(.99)}
+.wcard .whint{color:var(--muted2);margin-top:9px}
+.wcard.shown .whint{display:none}
+.wcard.reveal:not(.shown) .wv{display:none}
+.wordlist .gtitle{width:100%;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted2);margin:10px 0 1px}
+.wcard .wl{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2)}
+.wcard .wv{font-size:18px;font-weight:700;margin-top:7px}
+.wcard.spy{border-color:#F0D8DA}
+.wcard.spy .wv{color:var(--rose-ink)}
+.result-list{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.rrow{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);
+  border-radius:13px;padding:13px 14px;font-size:15px}
+.rrow.out{opacity:.42}                                    /* người bị loại: cả card mờ đi */
+.tag{margin-left:auto;font-size:11px;font-weight:750;letter-spacing:.06em;text-transform:uppercase;
+  padding:5px 9px;border-radius:8px;background:var(--surface2);color:var(--muted)}
+.tag.spy{background:var(--rose-soft);color:var(--rose-ink);border:1px solid #F0D8DA}
+.tag.civ{background:var(--sage-soft);color:var(--sage-ink);border:1px solid #D8E8DF}
+.tag.out{opacity:.55}
+.spyreveal{text-align:center;font-size:12.5px;font-weight:750;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);margin-top:11px}
+.spyreveal[hidden]{display:none}
+.scroll{flex:1;overflow-y:auto;scrollbar-width:none;margin:0 -4px;padding:0 4px}
+.scroll::-webkit-scrollbar{display:none}
+
+/* ---------- danh sách từ ---------- */
+.wordlist{max-height:46vh;overflow-y:auto;display:flex;flex-wrap:wrap;gap:7px;margin-top:2px;
+  padding:2px;scrollbar-width:none}
+.wordlist::-webkit-scrollbar{display:none}
+.wordlist span{background:var(--surface2);border-radius:9px;padding:7px 10px;font-size:13.5px;
+  color:var(--text);white-space:nowrap}
+
+/* ---------- toast ---------- */
+#toast{position:absolute;left:0;right:0;bottom:calc(22px + var(--safe-b));z-index:60;display:flex;
+  justify-content:center;pointer-events:none}
+.toast{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--line);
+  border-radius:15px;padding:12px 12px 12px 16px;box-shadow:0 12px 30px -18px rgba(59,53,66,.4);
+  font-size:14px;transform:translateY(20px);opacity:0;transition:.28s var(--ease)}
+.toast.in{transform:none;opacity:1;pointer-events:auto}
+.toast button{background:none;border:0;color:var(--rose-ink);font:inherit;font-weight:700;cursor:pointer;padding:6px 8px}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ============ 1. PLAYERS ============ -->
+  <section class="screen active" id="s-players">
+    <header class="head">
+      <div class="brand"><span class="dot"></span><h1 class="h1">GIÁN ĐIỆP</h1></div>
+    </header>
+
+    <div class="list-wrap" id="listWrap">
+      <div class="list" id="playerList"></div>
+      <p class="empty" id="emptyHint">Chưa có người chơi nào.</p>
+      <div class="addrow" id="addRow" hidden>
+        <input id="nameInput" type="text" placeholder="Tên người chơi" autocomplete="off"
+               autocorrect="off" spellcheck="false" enterkeyhint="done" maxlength="18">
+        <button class="iconbtn" id="btnAddDone" aria-label="Xong">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <footer class="foot">
+      <button class="btn" id="btnAdd">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        Thêm người chơi
+      </button>
+      <button class="btn primary" id="btnToSettings" disabled>Tiếp tục</button>
+    </footer>
+  </section>
+
+  <!-- ============ 2. SETTINGS ============ -->
+  <section class="screen" id="s-settings">
+    <div class="rowflex">
+      <button class="iconbtn" id="btnBackPlayers" aria-label="Quay lại">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <h1 class="h1" style="font-size:21px">CÀI ĐẶT</h1>
+    </div>
+
+    <div class="scroll">
+      <div class="sec">
+        <div class="label">Chế độ</div>
+        <div class="chips" id="modeChips"></div>
+      </div>
+
+      <div class="sec">
+        <div class="label">Thời gian mỗi lượt</div>
+        <div class="stepper">
+          <button class="stepbtn" id="timeMinus" aria-label="Giảm">−</button>
+          <div class="stepval" id="timeVal">5 phút</div>
+          <button class="stepbtn" id="timePlus" aria-label="Tăng">+</button>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="label">Số gián điệp</div>
+        <div class="stepper">
+          <button class="stepbtn" id="spyMinus" aria-label="Giảm">−</button>
+          <div class="stepval" id="spyVal">1</div>
+          <button class="stepbtn" id="spyPlus" aria-label="Tăng">+</button>
+        </div>
+        <div class="chips" id="spyModeChips"></div>
+      </div>
+
+      <div class="sec">
+        <div class="label">Chủ đề</div>
+        <div class="chips" id="topicChips"></div>
+        <button class="btn" id="btnShowWords" style="margin-top:12px;padding:13px">Xem danh sách từ</button>
+      </div>
+
+    </div>
+
+    <footer class="foot">
+      <button class="btn primary" id="btnStartDeal">Bắt đầu chia từ</button>
+    </footer>
+  </section>
+
+  <!-- ============ 3. DEAL ============ -->
+  <section class="screen" id="s-deal">
+    <div class="deal-top">
+      <span class="pill" id="dealProgress">1 / 4</span>
+    </div>
+
+    <div class="stage" id="stage">
+      <div class="panel" id="wordPanel">
+        <div class="pword" id="panelWord"></div>
+        <div class="ptopic" id="panelTopic" hidden></div>
+        <div class="pnote" id="panelNote" hidden></div>
+      </div>
+      <div class="card" id="dealCard">
+        <div class="cname" id="cardName">—</div>
+        <div class="chint">
+          <svg class="cup" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V6M6 12l6-6 6 6"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <footer class="foot">
+      <button class="btn" id="btnNextPlayer" disabled>Người tiếp theo</button>
+    </footer>
+  </section>
+
+  <!-- ============ 4. GAME ============ -->
+  <section class="screen" id="s-game">
+    <div class="game-top">
+      <span class="pill" id="gameRound">Lượt 1</span>
+      <span class="pill" id="gameAlive">Còn 4 người</span>
+    </div>
+
+    <div class="game-mid">
+      <div class="ringwrap">
+        <svg class="ring" viewBox="0 0 260 260">
+          <circle class="bgc" cx="130" cy="130" r="118"></circle>
+          <circle class="fgc" id="ringFg" cx="130" cy="130" r="118"></circle>
+        </svg>
+        <div class="timer-wrap">
+          <div class="timer" id="timerText">05:00</div>
+          <div class="tlabel" id="timerLabel">Thảo luận</div>
+        </div>
+      </div>
+      <div class="game-roster" id="gameRoster"></div>
+    </div>
+
+    <footer class="foot">
+      <button class="btn primary" id="btnPause">Tạm dừng</button>
+    </footer>
+  </section>
+
+  <!-- ============ 5. VOTE ============ -->
+  <section class="screen" id="s-vote">
+    <div class="rowflex">
+      <h1 class="h1" style="font-size:20px">BỎ PHIẾU</h1>
+      <span class="spacer"></span>
+      <span class="pill" id="voteProgress">0 / 4 phiếu</span>
+    </div>
+    <div class="progressbar"><i id="voteBar"></i></div>
+    <div class="vote-list" id="voteList"></div>
+    <footer class="foot">
+      <div class="rowflex" style="gap:10px">
+        <button class="btn" id="btnUndoVote" style="padding:14px">Hoàn tác</button>
+        <button class="btn" id="btnClearVote" style="padding:14px">Xoá phiếu</button>
+      </div>
+    </footer>
+  </section>
+
+  <!-- ============ 6. END ============ -->
+  <section class="screen" id="s-end">
+    <div class="scroll">
+      <div class="spyreveal" id="spyReveal" hidden></div>
+      <div class="wordgrid" id="wordGrid">
+        <div class="wcard reveal" id="cardCivil">
+          <div class="wl">Từ của dân</div><div class="wv" id="endCivil"></div><div class="whint"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/></svg></div>
+        </div>
+        <div class="wcard spy reveal" id="cardSpy">
+          <div class="wl">Từ của gián điệp</div><div class="wv" id="endSpy"></div><div class="whint"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/></svg></div>
+        </div>
+      </div>
+      <p class="label" style="font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--muted2);margin:20px 0 0">DANH SÁCH VAI TRÒ</p>
+      <div class="result-list" id="endList"></div>
+    </div>
+    <footer class="foot">
+      <button class="btn primary" id="btnPlayAgain">Chơi ván mới</button>
+      <button class="btn text" id="btnHome">Về màn hình đầu</button>
+    </footer>
+  </section>
+
+  <!-- ============ overlays ============ -->
+  <div class="overlay" id="ovPause">
+    <div class="sheet">
+      <h3 class="stitle" id="pauseTitle">Đang tạm dừng</h3>
+      <div class="acts">
+        <button class="btn primary" id="btnResume">Tiếp tục</button>
+        <button class="btn danger" id="btnGoVote">Bỏ phiếu</button>
+        <button class="btn text" id="btnQuitGame">Kết thúc ván</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="ovResult">
+    <div class="sheet">
+      <h3 class="stitle" id="resTitle">—</h3>
+      <p class="stext" id="resText">—</p>
+      <div class="acts" id="resActs"></div>
+    </div>
+  </div>
+
+  <div class="overlay verdict" id="ovVerdict">
+    <div class="vwrap">
+      <div class="vbadge"><div class="vicon" id="vIcon"></div></div>
+      <div class="vword" id="vWord">—</div>
+      <div class="vname" id="vName">—</div>
+    </div>
+    <div class="vacts" id="vActs"></div>
+  </div>
+
+  <div class="overlay" id="ovWords">
+    <div class="sheet">
+      <h3 class="stitle" id="wordsTitle">Danh sách từ</h3>
+      <p class="stext" id="wordsSub"></p>
+      <div class="wordlist" id="wordListEl"></div>
+      <div class="acts" style="margin-top:16px">
+        <button class="btn" id="btnCloseWords">Đóng</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+</div>
+
+<script>
+"use strict";
+/* ============================================================
+   GIÁN ĐIỆP · app quản trò
+   ============================================================ */
+const $  = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const buzz = (ms = 12) => { try { navigator.vibrate && navigator.vibrate(ms); } catch (e) {} };
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+};
+const ICON_TRASH = '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V5h6v2M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg>';
+const ICON_GRIP  = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.7"/><circle cx="15" cy="6" r="1.7"/><circle cx="9" cy="12" r="1.7"/><circle cx="15" cy="12" r="1.7"/><circle cx="9" cy="18" r="1.7"/><circle cx="15" cy="18" r="1.7"/></svg>';
+
+/* ---------- 2 chủ đề · mỗi chủ đề 100 từ, không từ nào trùng nghĩa ---------- */
+const TOPICS = [
+  {
+    id: "do-vat", name: "Đồ vật",
+    words: [
+      "Điện thoại",
+      "Chìa khoá",
+      "Bàn chải đánh răng",
+      "Kem đánh răng",
+      "Ghế",
+      "Cái bàn",
+      "Ba lô",
+      "Kéo",
+      "Gương",
+      "Đồng hồ báo thức",
+      "Cái dù",
+      "Điều khiển từ xa",
+      "Tai nghe",
+      "Đèn pin",
+      "Máy tính xách tay",
+      "Cái ly",
+      "Khăn lau",
+      "Gối",
+      "Chăn",
+      "Kính đeo mắt",
+      "Ti vi",
+      "Quạt máy",
+      "Điều hoà",
+      "Loa",
+      "Lịch treo tường",
+      "Tranh treo tường",
+      "Chậu cây",
+      "Bình hoa",
+      "Thảm trải sàn",
+      "Chiếc chiếu",
+      "Cái võng",
+      "Giường",
+      "Tủ quần áo",
+      "Móc áo",
+      "Tủ lạnh",
+      "Bếp ga",
+      "Nồi cơm điện",
+      "Ấm đun nước",
+      "Phích nước",
+      "Cái chảo",
+      "Cái thớt",
+      "Con dao",
+      "Cái bát",
+      "Đôi đũa",
+      "Cái thìa",
+      "Cái đĩa",
+      "Cái rổ",
+      "Cái muôi",
+      "Hộp cơm",
+      "Xe đạp",
+      "Lọ gia vị",
+      "Khẩu trang",
+      "Máy lọc nước",
+      "Bồn rửa bát",
+      "Vòi nước",
+      "Máy giặt",
+      "Dây phơi",
+      "Kẹp quần áo",
+      "Bàn là",
+      "Máy hút bụi",
+      "Cây chổi",
+      "Cây lau nhà",
+      "Thùng rác",
+      "Giá sách",
+      "Truyện tranh",
+      "Bút bi",
+      "Kẹp giấy",
+      "Dây thun",
+      "Thước kẻ",
+      "Hộp bút",
+      "Bản đồ",
+      "Bàn phím",
+      "Sạc điện thoại",
+      "Pin",
+      "Ổ cắm điện",
+      "Cái bóng đèn",
+      "Bảng trắng",
+      "Lò vi sóng",
+      "Bồn cầu",
+      "Xà phòng",
+      "Dầu gội đầu",
+      "Áo mưa",
+      "Cái lược",
+      "Máy sấy tóc",
+      "Hộp bột giặt",
+      "Nón bảo hiểm",
+      "Túi xách",
+      "Ví tiền",
+      "Dây chuyền",
+      "Cái bấm móng tay",
+      "Máy ảnh",
+      "Quả bóng",
+      "Bộ xếp hình",
+      "Khung ảnh",
+      "Đàn ghi-ta",
+      "Kệ giày",
+      "Cái còi",
+      "Cái cân",
+      "Búp bê",
+      "Cuộn băng dính",
+    ]
+  },
+  {
+    id: "nghe-nghiep", name: "Nghề nghiệp",
+    words: [
+      "Bác sĩ",
+      "Y tá",
+      "Nha sĩ",
+      "Dược sĩ",
+      "Giáo viên",
+      "Hiệu trưởng",
+      "Nhân viên thư viện",
+      "Bảo mẫu",
+      "Huấn luyện viên",
+      "Cảnh sát",
+      "Bộ đội",
+      "Lính cứu hoả",
+      "Bảo vệ",
+      "Phi công",
+      "Tiếp viên hàng không",
+      "Tài xế xe buýt",
+      "Thuyền trưởng",
+      "Người đưa thư",
+      "Nhân viên giao hàng",
+      "Người bán vé",
+      "Ca sĩ",
+      "Nhạc sĩ",
+      "Diễn viên",
+      "Vũ công",
+      "Đạo diễn",
+      "Nghệ sĩ",
+      "Người đua xe đạp",
+      "Người dẫn chương trình",
+      "Ảo thuật gia",
+      "Người mẫu",
+      "Chú hề",
+      "Nhiếp ảnh gia",
+      "Người quay phim",
+      "Phóng viên",
+      "Bình luận viên",
+      "Biên kịch",
+      "Nhà văn",
+      "Người phiên dịch",
+      "Kỹ sư",
+      "Lập trình viên",
+      "Kiến trúc sư",
+      "Nhà khoa học",
+      "Nhà thiên văn học",
+      "Nhà khảo cổ học",
+      "Nhà tâm lý học",
+      "Luật sư",
+      "Nhà thiết kế",
+      "Thư ký",
+      "Kế toán",
+      "Nhân viên ngân hàng",
+      "Giám đốc",
+      "Nhân viên tiếp thị",
+      "Nhân viên tổng đài",
+      "Lễ tân",
+      "Hướng dẫn viên du lịch",
+      "Nhân viên rạp phim",
+      "Người tổ chức sự kiện",
+      "Biên tập viên",
+      "Người giúp việc",
+      "Chuyên gia bảo mật",
+      "Thợ xây",
+      "Thợ mộc",
+      "Thợ cơ khí",
+      "Thợ điện",
+      "Công nhân điện lực",
+      "Thợ sửa ống nước",
+      "Thợ sửa xe",
+      "Thợ sửa điện thoại",
+      "Thợ hàn",
+      "Thợ mỏ",
+      "Thợ gốm",
+      "Thợ may",
+      "Thợ bạc",
+      "Thợ sơn",
+      "Công nhân nhà máy",
+      "Nhân viên kho",
+      "Thợ lái cần cẩu",
+      "Đầu bếp",
+      "Thợ làm bánh",
+      "Pha chế",
+      "Phục vụ bàn",
+      "Thợ cắt tóc",
+      "Thợ trang điểm",
+      "Nhân viên bán hàng",
+      "Thu ngân",
+      "Nhân viên trạm xăng",
+      "Người trông xe",
+      "Nhân viên vệ sinh",
+      "Nông dân",
+      "Người đánh cá",
+      "Kiểm lâm",
+      "Người chăn cừu",
+      "Người lái đò",
+      "Người nuôi ong",
+      "Thợ lặn",
+      "Nhân viên sở thú",
+      "Cầu thủ bóng đá",
+      "Trọng tài",
+      "Vận động viên bơi lội",
+      "Võ sĩ",
+    ]
+  },
+  {
+    id: "dia-diem", name: "Địa điểm",
+    words: [
+      "Sân bay",
+      "Nhà ga",
+      "Bến tàu",
+      "Bến xe",
+      "Tiệm may",
+      "Trạm xăng",
+      "Bãi biển",
+      "Công viên",
+      "Sở thú",
+      "Rạp chiếu phim",
+      "Nhà hát",
+      "Bảo tàng",
+      "Thư viện",
+      "Trường học",
+      "Bệnh viện",
+      "Nhà thuốc",
+      "Phòng khám",
+      "Siêu thị",
+      "Trung tâm thương mại",
+      "Chợ",
+      "Rạp xiếc",
+      "Tiệm tạp hoá",
+      "Tiệm bánh",
+      "Quán cà phê",
+      "Quán trà sữa",
+      "Nhà hàng",
+      "Quán karaoke",
+      "Khách sạn",
+      "Nhà trọ",
+      "Khu cắm trại",
+      "Ngân hàng",
+      "Bưu điện",
+      "Tiệm cắt tóc",
+      "Tiệm hoa",
+      "Tiệm sách",
+      "Tiệm vàng",
+      "Tiệm giặt ủi",
+      "Cửa hàng quần áo",
+      "Cửa hàng giày",
+      "Cửa hàng điện thoại",
+      "Cửa hàng thú cưng",
+      "Tiệm sửa xe",
+      "Sân vận động",
+      "Sân bóng",
+      "Hồ bơi",
+      "Phòng tập thể hình",
+      "Nhà thi đấu",
+      "Cây ATM",
+      "Khu vui chơi",
+      "Quán internet",
+      "Nhà máy",
+      "Nông trại",
+      "Vườn trái cây",
+      "Rừng",
+      "Núi",
+      "Hang động",
+      "Hồ câu cá",
+      "Thác nước",
+      "Con sông",
+      "Hòn đảo",
+      "Chùa",
+      "Nhà thờ",
+      "Đền thờ",
+      "Khu chung cư",
+      "Sân thượng",
+      "Cây cầu",
+      "Đồn cảnh sát",
+      "Trạm cứu hoả",
+      "Toà án",
+      "Toà nhà văn phòng",
+      "Khu nghỉ dưỡng",
+      "Làng chài",
+      "Bãi đỗ xe",
+      "Nhà kho",
+      "Vườn hoa",
+      "Doanh trại",
+      "Khu phố đi bộ",
+    ]
+  },
+  {
+    id: "dong-vat", name: "Động vật",
+    words: [
+      "Chó",
+      "Mèo",
+      "Heo",
+      "Bò",
+      "Trâu",
+      "Dê",
+      "Cừu",
+      "Ngựa",
+      "Thỏ",
+      "Gà",
+      "Vịt",
+      "Ngỗng",
+      "Chim bồ câu",
+      "Chim sẻ",
+      "Đại bàng",
+      "Cú mèo",
+      "Vẹt",
+      "Chim công",
+      "Đà điểu",
+      "Chim cánh cụt",
+      "Cá heo",
+      "Cá mập",
+      "Cá voi",
+      "Cá vàng",
+      "Cá hồi",
+      "Cá ngựa",
+      "Bạch tuộc",
+      "Con mực",
+      "Tôm",
+      "Cua",
+      "Sứa",
+      "Sao biển",
+      "Ốc sên",
+      "Ếch",
+      "Rùa",
+      "Rắn",
+      "Thằn lằn",
+      "Cá sấu",
+      "Sư tử",
+      "Hổ",
+      "Con báo",
+      "Chim gõ kiến",
+      "Gấu trúc",
+      "Koala",
+      "Voi",
+      "Tê giác",
+      "Hà mã",
+      "Hươu cao cổ",
+      "Lạc đà",
+      "Nai",
+      "Khỉ",
+      "Con lười",
+      "Kangaroo",
+      "Sóc",
+      "Chuột",
+      "Cá chép",
+      "Nhím",
+      "Dơi",
+      "Con cò",
+      "Cáo",
+      "Hải cẩu",
+      "Ong",
+      "Bướm",
+      "Chuồn chuồn",
+      "Kiến",
+      "Nhện",
+      "Bọ cánh cam",
+      "Con gián",
+      "Muỗi",
+      "Ruồi",
+      "Ve sầu",
+      "Châu chấu",
+      "Bọ ngựa",
+      "Dế mèn",
+    ]
+  },
+];
+
+/* ---------- state ---------- */
+const state = {
+  players: [],          // [{id, name}] theo đúng thứ tự đưa máy
+  minutes: 5,
+  spies: 1,
+  randomSpies: false,   // số gián điệp ngẫu nhiên — chỉ lộ khi kết thúc ván
+  spiesInGame: 1,
+  round: 1,
+  roles: {},            // id -> 'spy' | 'civil'
+  words: { civil: "—", spy: "—" },
+  alive: [],
+  dealIndex: 0,
+  peeked: {},
+  remaining: 300000,
+  running: false,
+  endAt: 0,
+  lastPair: "",
+  pickedTopic: null
+};
+let tickId = null;
+const TIME_MIN = 1, TIME_MAX = 60;      // phút — chỉnh bằng nút − / +
+
+/* ---------- navigation ---------- */
+function show(id) { $$(".screen").forEach(s => s.classList.toggle("active", s.id === id)); }
+
+/* ---------- toast ---------- */
+let toastTimer = null;
+function toast(msg, actionLabel, onAction) {
+  const box = $("#toast");
+  box.innerHTML = "";
+  const el = document.createElement("div");
+  el.className = "toast";
+  el.innerHTML = '<span></span>';
+  el.firstChild.textContent = msg;
+  if (actionLabel) {
+    const b = document.createElement("button");
+    b.textContent = actionLabel;
+    b.onclick = () => { onAction && onAction(); closeToast(); };
+    el.appendChild(b);
+  }
+  box.appendChild(el);
+  requestAnimationFrame(() => el.classList.add("in"));
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(closeToast, 5200);
+}
+function closeToast() {
+  const el = $(".toast");
+  if (!el) return;
+  el.classList.remove("in");
+  setTimeout(() => el.remove(), 320);
+}
+
+/* ============================================================
+   1. NGƯỜI CHƠI
+   ============================================================ */
+state.players = store.get("gd.players", []) || [];
+state.minutes = store.get("gd.minutes", 5) || 5;
+state.minutes = Math.min(TIME_MAX, Math.max(TIME_MIN, state.minutes));
+state.spies = store.get("gd.spies", 1) || 1;
+state.randomSpies = store.get("gd.randomSpies", false) === true;
+/* chế độ chơi */
+const MODES = [
+  { id: "hidden", name: "Gián điệp ẩn" },     // nhận từ khác, không biết mình là gián điệp
+  { id: "known",  name: "Gián điệp biết" }    // biết vai + biết chủ đề, không nhận từ
+];
+state.mode = store.get("gd.mode", "hidden");
+if (!MODES.some(m => m.id === state.mode)) state.mode = "hidden";
+function isKnownMode() { return state.mode === "known"; }
+
+/* chủ đề đang chọn (chọn được nhiều) — có đọc khoá cũ gd.topic để không mất cài đặt của bản trước */
+(function initTopics() {
+  const saved = store.get("gd.topics", null);
+  const legacy = store.get("gd.topic", null);
+  let ids = Array.isArray(saved) ? saved.filter(id => TOPICS.some(t => t.id === id)) : [];
+  if (!ids.length && TOPICS.some(t => t.id === legacy)) ids = [legacy];
+  if (!ids.length) ids = [TOPICS[0].id];
+  state.topics = TOPICS.map(t => t.id).filter(id => ids.includes(id));   // giữ đúng thứ tự hiển thị
+})();
+
+function savePlayers() { store.set("gd.players", state.players); }
+
+function renderPlayers() {
+  const list = $("#playerList");
+  list.innerHTML = "";
+  state.players.forEach((p, i) => {
+    const row = document.createElement("div");
+    row.className = "row";
+    row.dataset.id = p.id;
+    row.innerHTML =
+      '<div class="row-del">' +
+        '<span class="dside left">' + ICON_TRASH + '<span>Xoá</span></span>' +
+        '<span class="dside right"><span>Xoá</span>' + ICON_TRASH + '</span>' +
+      '</div>' +
+      '<div class="row-front">' +
+        '<span class="idx">' + (i + 1) + '</span>' +
+        '<span class="pname"></span>' +
+        '<span class="handle">' + ICON_GRIP + '</span>' +
+      '</div>';
+    row.querySelector(".pname").textContent = p.name;
+    list.appendChild(row);
+  });
+  $("#emptyHint").hidden = state.players.length > 0;
+  const ok = state.players.length >= 3;
+  $("#btnToSettings").disabled = !ok;
+  $("#btnToSettings").textContent = ok ? "Tiếp tục" : "Cần ít nhất 3 người chơi";
+  syncSpyLimit();
+}
+
+function addPlayer(name) {
+  name = (name || "").trim().replace(/\s+/g, " ");
+  if (!name) return;
+  state.players.push({ id: "p" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), name: name });
+  savePlayers();
+  renderPlayers();
+  const wrap = $("#listWrap");
+  requestAnimationFrame(() => { wrap.scrollTop = wrap.scrollHeight; });
+}
+
+function removePlayer(id) {
+  const i = state.players.findIndex(p => p.id === id);
+  if (i < 0) return;
+  const removed = state.players[i];
+  const at = i;
+  state.players.splice(i, 1);
+  savePlayers();
+  renderPlayers();
+  toast('Đã xoá "' + removed.name + '"', "Hoàn tác", () => {
+    state.players.splice(at, 0, removed);
+    savePlayers(); renderPlayers();
+  });
+}
+
+/* --- thêm tên --- */
+const addRow = $("#addRow"), nameInput = $("#nameInput");
+$("#btnAdd").onclick = () => {
+  buzz(10);
+  if (!addRow.hidden) { nameInput.focus(); return; }     // đang mở thì chỉ focus lại
+  addRow.hidden = false;
+  nameInput.value = "";
+  nameInput.focus();
+  setTimeout(() => nameInput.focus(), 60);
+  setTimeout(() => { $("#listWrap").scrollTop = $("#listWrap").scrollHeight; }, 260);
+};
+function commitInput() {
+  const v = nameInput.value.trim();
+  if (!v) return;
+  addPlayer(v);
+  nameInput.value = "";
+  buzz(12);
+}
+function closeAddRow() {
+  commitInput();
+  addRow.hidden = true;
+  nameInput.blur();
+}
+/* dùng pointerdown: lúc đó list chưa dài ra nên nút chưa bị dịch chỗ */
+$("#btnAddDone").addEventListener("pointerdown", e => { e.preventDefault(); closeAddRow(); });
+$("#btnAddDone").addEventListener("click", () => { if (!addRow.hidden) closeAddRow(); });
+nameInput.addEventListener("keydown", e => {
+  if (e.key === "Enter") { e.preventDefault(); commitInput(); }   // Enter: thêm tên, giữ ô nhập để gõ tiếp
+});
+/* chạm ra ngoài ô nhập → đóng */
+$("#s-players").addEventListener("pointerdown", e => {
+  if (addRow.hidden) return;
+  if (e.target.closest("#addRow")) return;
+  closeAddRow();
+}, true);
+
+/* --- vuốt phải để xoá + kéo để sắp xếp --- */
+(function listGestures() {
+  const list = $("#playerList");
+  let sw = null, dg = null;
+
+  list.addEventListener("pointerdown", e => {
+    const row = e.target.closest(".row");
+    if (!row) return;
+    const handle = e.target.closest(".handle");
+    if (handle) { startDrag(e, row, handle); return; }
+    if (e.target.closest(".row-front")) {
+      sw = { row, front: row.querySelector(".row-front"), x0: e.clientX, y0: e.clientY, active: false };
+    }
+  });
+
+  function startDrag(e, row, handle) {
+    const rows = $$(".row", list);
+    const idx = rows.indexOf(row);
+    if (idx < 0 || rows.length < 2) return;
+    const step = (rows[1].offsetTop - rows[0].offsetTop) || (row.offsetHeight + 9);
+    dg = { rows, idx, target: idx, y0: e.clientY, step, row };
+    row.classList.add("dragging");
+    row.style.transition = "none";
+    try { handle.setPointerCapture(e.pointerId); } catch (err) {}
+    buzz(10);
+  }
+
+  window.addEventListener("pointermove", e => {
+    if (sw) {
+      const dx = e.clientX - sw.x0, dy = e.clientY - sw.y0;
+      if (!sw.active) {
+        if (Math.abs(dx) > 9 && Math.abs(dx) > Math.abs(dy) * 1.15) {
+          sw.active = true;
+          sw.front.style.transition = "none";
+        } else if (Math.abs(dy) > 9) { sw = null; return; }
+      }
+      if (sw.active) {
+        const d = Math.max(-999, Math.min(999, dx));
+        sw.front.style.transform = "translateX(" + d + "px)";
+        sw.row.classList.toggle("sw-right", d > 6);      // hiện chữ "Xoá" ở bên đang vuốt
+        sw.row.classList.toggle("sw-left", d < -6);
+      }
+    } else if (dg) {
+      const dy = e.clientY - dg.y0;
+      const t = Math.max(0, Math.min(dg.rows.length - 1, dg.idx + Math.round(dy / dg.step)));
+      dg.target = t;
+      dg.row.style.transform = "translateY(" + dy + "px)";
+      dg.rows.forEach((r, j) => {
+        if (j === dg.idx) return;
+        let shift = 0;
+        if (dg.idx < t && j > dg.idx && j <= t) shift = -dg.step;
+        else if (dg.idx > t && j < dg.idx && j >= t) shift = dg.step;
+        r.style.transition = "transform .16s var(--ease)";
+        r.style.transform = shift ? "translateY(" + shift + "px)" : "";
+      });
+    }
+  }, { passive: true });
+
+  window.addEventListener("pointerup", () => {
+    if (sw) {
+      const width = sw.row.offsetWidth || 360;   // dự phòng khi chưa đo được layout
+      const dx = parseFloat((sw.front.style.transform.match(/-?\d+(\.\d+)?/) || [0])[0]) || 0;
+      if (sw.active && Math.abs(dx) > Math.min(120, width * 0.34)) {
+        const id = sw.row.dataset.id;
+        sw.front.style.transition = "transform .22s var(--ease)";
+        sw.front.style.transform = "translateX(" + (dx > 0 ? 105 : -105) + "%)";
+        setTimeout(() => removePlayer(id), 150);
+      } else {
+        sw.front.style.transition = "transform .26s var(--ease)";
+        sw.front.style.transform = "";
+      }
+      sw.row.classList.remove("sw-right", "sw-left");
+      sw = null;
+      return;
+    }
+    if (dg) {
+      const { rows, idx, target, row } = dg;
+      rows.forEach(r => { r.style.transform = ""; r.style.transition = ""; });
+      row.classList.remove("dragging");
+      const d = dg; dg = null;
+      if (d.target !== idx) {
+        const moved = state.players.splice(idx, 1)[0];
+        state.players.splice(target, 0, moved);
+        savePlayers();
+        renderPlayers();
+        buzz(14);
+      }
+    }
+  });
+})();
+
+/* ============================================================
+   2. CÀI ĐẶT
+   ============================================================ */
+function maxSpies() { return Math.max(1, Math.floor((state.players.length - 1) / 2)); }
+function spyPoolMax() { return Math.min(3, maxSpies()); }     // trần cho chế độ ngẫu nhiên
+function resolveSpies() {
+  return state.randomSpies ? 1 + Math.floor(Math.random() * spyPoolMax()) : state.spies;
+}
+function syncSpyLimit() {
+  const mx = maxSpies();
+  if (state.spies > mx) { state.spies = mx; store.set("gd.spies", mx); }
+  if (state.spies < 1) { state.spies = 1; store.set("gd.spies", 1); }
+  const minus = $("#spyMinus"), plus = $("#spyPlus"), val = $("#spyVal");
+  if (!val) return;
+  val.textContent = state.randomSpies ? "?" : state.spies;
+  minus.disabled = state.randomSpies || state.spies <= 1;
+  plus.disabled = state.randomSpies || state.spies >= mx;
+}
+
+function renderSettings() {
+  $("#timeVal").textContent = state.minutes + " phút";
+  $("#timeMinus").disabled = state.minutes <= TIME_MIN;
+  $("#timePlus").disabled = state.minutes >= TIME_MAX;
+
+  const mbox = $("#modeChips");
+  mbox.innerHTML = "";
+  MODES.forEach(m => {
+    const b = document.createElement("button");
+    b.className = "chip" + (m.id === state.mode ? " on" : "");
+    b.textContent = m.name;
+    b.onclick = () => {
+      if (state.mode === m.id) return;
+      state.mode = m.id;
+      store.set("gd.mode", m.id);
+      buzz(10);
+      renderSettings();
+    };
+    mbox.appendChild(b);
+  });
+
+  const sbox = $("#spyModeChips");
+  sbox.innerHTML = "";
+  (function () {
+    const b = document.createElement("button");
+    b.className = "chip" + (state.randomSpies ? " on" : "");
+    b.textContent = "Ngẫu nhiên";
+    b.onclick = () => {
+      state.randomSpies = !state.randomSpies;
+      store.set("gd.randomSpies", state.randomSpies);
+      buzz(10);
+      renderSettings();
+    };
+    sbox.appendChild(b);
+  })();
+
+  const tbox = $("#topicChips");
+  tbox.innerHTML = "";
+  TOPICS.forEach(t => {
+    const on = state.topics.indexOf(t.id) >= 0;
+    const b = document.createElement("button");
+    b.className = "chip" + (on ? " on" : "");
+    b.textContent = t.name;
+    b.onclick = () => {
+      buzz(10);
+      if (on) {
+        if (state.topics.length === 1) { toast("Chọn ít nhất 1 chủ đề"); return; }
+        state.topics = state.topics.filter(x => x !== t.id);
+      } else {
+        state.topics = TOPICS.map(x => x.id).filter(id => state.topics.indexOf(id) >= 0 || id === t.id);
+      }
+      store.set("gd.topics", state.topics);
+      renderSettings();
+    };
+    tbox.appendChild(b);
+  });
+
+  syncSpyLimit();
+
+}
+$("#spyMinus").onclick = () => { if (state.randomSpies) return; state.spies = Math.max(1, state.spies - 1); store.set("gd.spies", state.spies); buzz(10); renderSettings(); };
+$("#spyPlus").onclick  = () => { if (state.randomSpies) return; state.spies = Math.min(maxSpies(), state.spies + 1); store.set("gd.spies", state.spies); buzz(10); renderSettings(); };
+$("#timeMinus").onclick = () => { state.minutes = Math.max(TIME_MIN, state.minutes - 1); store.set("gd.minutes", state.minutes); buzz(10); renderSettings(); };
+$("#timePlus").onclick  = () => { state.minutes = Math.min(TIME_MAX, state.minutes + 1); store.set("gd.minutes", state.minutes); buzz(10); renderSettings(); };
+$("#btnShowWords").onclick = () => {
+  buzz(10);
+  const box = $("#wordListEl"), pool = selectedTopics();
+  const sig = pool.map(t => t.id + ":" + t.words.length).join("|");
+  if (box.dataset.sig !== sig) {
+    box.innerHTML = "";
+    pool.forEach(t => {
+      if (pool.length > 1) {
+        const h = document.createElement("div");
+        h.className = "gtitle";
+        h.textContent = t.name;
+        box.appendChild(h);
+      }
+      t.words.forEach(w => { const el = document.createElement("span"); el.textContent = w; box.appendChild(el); });
+    });
+    box.dataset.sig = sig;
+  }
+  const words = pool.reduce((a, t) => a + t.words.length, 0);
+  const used = pool.reduce((a, t) => a + memoryUsed(t), 0);
+  const all = pool.reduce((a, t) => a + memoryTotal(t), 0);
+  $("#wordsTitle").textContent = pool.length === 1
+    ? pool[0].name + " · " + pool[0].words.length + " từ"
+    : pool.length + " chủ đề · " + words + " từ";
+  $("#wordsSub").textContent = used + " / " + all + (isKnownMode() ? " từ đã chơi" : " cặp từ đã chơi");
+  $("#ovWords").classList.add("open");
+};
+$("#btnCloseWords").onclick = () => $("#ovWords").classList.remove("open");
+$("#ovWords").addEventListener("click", e => { if (e.target.id === "ovWords") $("#ovWords").classList.remove("open"); });
+
+$("#btnToSettings").onclick = () => { renderSettings(); show("s-settings"); };
+$("#btnBackPlayers").onclick = () => show("s-players");
+$("#btnStartDeal").onclick = () => { buzz(12); startDeal(); };
+
+/* ============================================================
+   3. CHIA TỪ
+   ============================================================ */
+function selectedTopics() { return TOPICS.filter(t => state.topics.indexOf(t.id) >= 0); }
+function totalPairCount(t) { const n = t.words.length; return n * (n - 1) / 2; }
+
+/* ---------- bộ nhớ từ đã chơi: giữ trọn 1 vòng, dùng hết kho mới quay lại từ đầu ---------- */
+function seenAll() {
+  const v = store.get("gd.seen", {});
+  return (v && typeof v === "object" && !Array.isArray(v)) ? v : {};
+}
+function seenFor(t) {
+  const all = seenAll();
+  let rec = all[t.id];
+  if (!rec || rec.sig !== t.words.length || !Array.isArray(rec.pairs)) {
+    rec = { sig: t.words.length, pairs: [], singles: [] };
+  }
+  if (!Array.isArray(rec.singles)) rec.singles = [];      // hồ sơ của bản cũ
+  all[t.id] = rec;
+  store.set("gd.seen", all);
+  return rec;
+}
+/* chế độ ẩn: nhớ cặp từ · chế độ biết: chỉ cần nhớ từ đơn */
+function memoryUsed(t) {
+  const rec = seenFor(t);
+  return isKnownMode() ? rec.singles.length : rec.pairs.length;
+}
+function memoryTotal(t) {
+  return isKnownMode() ? t.words.length : totalPairCount(t);
+}
+function remember(t, key) {
+  const all = seenAll();
+  const rec = seenFor(t);
+  const list = isKnownMode() ? rec.singles : rec.pairs;
+  if (list.indexOf(key) < 0) list.push(key);
+  if (list.length >= memoryTotal(t)) {         // đã dùng hết kho của chủ đề → mở vòng mới
+    if (isKnownMode()) rec.singles = [key]; else rec.pairs = [key];
+  }
+  all[t.id] = rec;
+  store.set("gd.seen", all);
+}
+
+function pickWords() {
+  const pool = selectedTopics();
+  const t = pool[Math.floor(Math.random() * pool.length)];        // random 1 chủ đề trong số đã chọn
+  const list = t.words, n = list.length;
+  const rec = seenFor(t);
+
+  if (isKnownMode()) {
+    /* gián điệp biết vai: chỉ dân nhận từ → bốc 1 từ */
+    const rec = seenFor(t);
+    let idx = 0, wkey = "";
+    for (let k = 0; k < 600; k++) {
+      idx = Math.floor(Math.random() * n);
+      wkey = "w" + idx;
+      if (wkey === state.lastPair) continue;              // không lặp từ của ván liền trước
+      if (rec.singles.indexOf(wkey) >= 0) continue;       // ưu tiên từ chưa chơi
+      break;
+    }
+    state.words = { civil: list[idx], spy: "" };
+    state.pickedTopic = t;
+    state.lastPair = wkey;
+    remember(t, wkey);
+    return;
+  }
+
+  let i = 0, j = 1, key = "";
+  for (let k = 0; k < 600; k++) {
+    const x = Math.floor(Math.random() * n);
+    let y = Math.floor(Math.random() * (n - 1));
+    if (y >= x) y++;                                              // 2 từ khác nhau tuyệt đối
+    i = Math.min(x, y); j = Math.max(x, y);                        // cùng cặp chỉ số dùng cho cả key lẫn từ
+    key = i + "-" + j;
+    if (key === state.lastPair) continue;                         // không lặp lại cặp vừa chơi
+    if (rec.pairs.indexOf(key) >= 0) continue;                    // ưu tiên cặp chưa từng gặp
+    break;
+  }
+  const a = list[i], b = list[j];
+  const swap = Math.random() < 0.5;                               // từ nào của dân / gián điệp là ngẫu nhiên
+  state.words = { civil: swap ? b : a, spy: swap ? a : b };
+  state.pickedTopic = t;
+  state.lastPair = key;
+  remember(t, key);
+}
+
+function buildRoles() {
+  const ids = state.players.map(p => p.id);
+  const shuffled = ids.slice();
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  state.roles = {};
+  ids.forEach(id => { state.roles[id] = "civil"; });
+  state.spiesInGame = resolveSpies();                 // chế độ ngẫu nhiên: chốt số gián điệp ở đây
+  shuffled.slice(0, state.spiesInGame).forEach(id => { state.roles[id] = "spy"; });
+  state.alive = ids.slice();
+}
+
+function startDeal() {
+  pickWords();
+  buildRoles();
+  state.round = 1;
+  state.dealIndex = 0;
+  state.peeked = {};
+  state.remaining = state.minutes * 60000;
+  show("s-deal");
+  renderDeal();
+}
+
+let dealReveal = { big: "", spy: false, topic: "", note: "" }, clearWordTimer = null;
+
+/* chế độ "biết": gián điệp thấy vai của mình + chủ đề + phải nghĩ ra 1 từ chung */
+function revealFor(p) {
+  const isSpy = state.roles[p.id] === "spy";
+  if (isKnownMode() && isSpy) {
+    return {
+      big: "GIÁN ĐIỆP", spy: true,
+      topic: "Chủ đề: " + (state.pickedTopic ? state.pickedTopic.name : ""),
+      note: "Nghĩ 1 từ chung nhất để không bị bắt"
+    };
+  }
+  return { big: state.words[isSpy ? "spy" : "civil"], spy: false, topic: "", note: "" };
+}
+function renderDeal() {
+  const p = state.players[state.dealIndex];
+  if (!p) return;
+  $("#dealProgress").textContent = (state.dealIndex + 1) + " / " + state.players.length;
+  $("#cardName").textContent = p.name;
+  dealReveal = revealFor(p);
+  clearTimeout(clearWordTimer);
+  clearPanel();                       // nội dung không nằm trong DOM khi chưa lật thẻ
+  const card = $("#dealCard");
+  card.style.transition = "none";
+  card.style.transform = "translateY(0)";
+  setReveal(0);
+  const last = state.dealIndex === state.players.length - 1;
+  const btn = $("#btnNextPlayer");
+  btn.textContent = last ? "Bắt đầu chơi" : "Người tiếp theo";
+  btn.disabled = !state.peeked[p.id];
+}
+
+/* --- reveal : kéo thẻ lên --- */
+const stageEl = $("#stage"), cardEl = $("#dealCard"), panelEl = $("#wordPanel"), wordEl = $("#panelWord");
+const topicEl = $("#panelTopic"), noteEl = $("#panelNote");
+function clearPanel() {
+  wordEl.textContent = "";
+  wordEl.classList.remove("spy");
+  topicEl.textContent = ""; topicEl.hidden = true;
+  noteEl.textContent = ""; noteEl.hidden = true;
+}
+function setReveal(p) {
+  if (p > 0.02 && wordEl.textContent !== dealReveal.big) {
+    wordEl.textContent = dealReveal.big;
+    wordEl.classList.toggle("spy", dealReveal.spy);
+    topicEl.textContent = dealReveal.topic; topicEl.hidden = !dealReveal.topic;
+    noteEl.textContent = dealReveal.note; noteEl.hidden = !dealReveal.note;
+  }
+  panelEl.style.opacity = String(Math.min(1, p * 1.5));
+  panelEl.style.transform = "scale(" + (0.93 + 0.07 * Math.min(1, p * 1.7)) + ")";
+}
+(function cardDrag() {
+  const stage = stageEl, card = cardEl;
+  let d = null;
+
+  card.addEventListener("pointerdown", e => {
+    if (!$("#s-deal").classList.contains("active")) return;   // chỉ nhận khi đang ở màn chia từ
+    const p = state.players[state.dealIndex];
+    if (!p) return;
+    clearTimeout(clearWordTimer);
+    d = { y0: e.clientY, H: stage.offsetHeight, max: 0 };
+    card.style.transition = "none";
+    card.style.cursor = "grabbing";
+    try { card.setPointerCapture(e.pointerId); } catch (err) {}
+  });
+
+  card.addEventListener("pointermove", e => {
+    if (!d || !$("#s-deal").classList.contains("active")) return;
+    let dy = e.clientY - d.y0;
+    if (dy > 0) dy = dy * 0.18;
+    dy = Math.max(-d.H, Math.min(0, dy));
+    d.max = Math.max(d.max, -dy);
+    card.style.transform = "translateY(" + dy + "px)";
+    setReveal(Math.min(1, -dy / (d.H * 0.72)));
+  });
+
+  function release() {
+    if (!d) return;
+    const p = state.players[state.dealIndex];
+    const revealed = d.max > d.H * 0.42;
+    d = null;
+    card.style.cursor = "grab";
+    card.style.transition = "transform .58s cubic-bezier(.2,1.28,.36,1)";
+    card.style.transform = "translateY(0)";
+    setReveal(0);
+    clearTimeout(clearWordTimer);
+    clearWordTimer = setTimeout(clearPanel, 620);   // xoá khỏi DOM sau khi thẻ đóng
+    if (revealed && p && !state.peeked[p.id]) {
+      state.peeked[p.id] = true;
+      $("#btnNextPlayer").disabled = false;
+      buzz(18);
+    }
+  }
+  card.addEventListener("pointerup", release);
+  card.addEventListener("pointercancel", release);
+})();
+
+$("#btnNextPlayer").onclick = () => {
+  const last = state.dealIndex === state.players.length - 1;
+  if (last) { startGame(); return; }
+  state.dealIndex++;
+  buzz(10);
+  renderDeal();
+};
+
+/* ============================================================
+   4. CHƠI + TIMER
+   ============================================================ */
+const CIRC = 2 * Math.PI * 118;
+$("#ringFg").style.strokeDasharray = CIRC;
+
+function fmt(ms) {
+  const s = Math.max(0, Math.ceil(ms / 1000));
+  return String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0");
+}
+function renderTimer() {
+  const total = state.minutes * 60000;
+  $("#timerText").textContent = fmt(state.remaining);
+  $("#timerText").classList.toggle("low", state.remaining <= 30000);
+  $("#ringFg").style.strokeDashoffset = String(CIRC * (1 - Math.max(0, Math.min(1, state.remaining / total))));
+  $("#timerLabel").textContent = state.running ? "Thảo luận" : "Tạm dừng";
+}
+function renderGame() {
+  $("#gameRound").textContent = "Lượt " + state.round;
+  $("#gameAlive").textContent = "Còn " + state.alive.length + " người";
+  const row = $("#gameRoster");
+  row.innerHTML = "";
+  state.players.forEach(p => {                       // full danh sách; bị loại thì mờ + hiện vai đã lộ
+    const out = state.alive.indexOf(p.id) < 0;
+    const spy = state.roles[p.id] === "spy";
+    const c = document.createElement("span");
+    c.className = "pchip" + (out ? " out" : "");
+    const sn = document.createElement("span"); sn.className = "pn"; sn.textContent = p.name;
+    c.appendChild(sn);
+    if (out) {
+      const rl = document.createElement("span");
+      rl.className = "prole" + (spy ? " spy" : "");
+      rl.textContent = spy ? "Gián điệp" : "Dân";
+      c.appendChild(rl);
+    }
+    row.appendChild(c);
+  });
+  renderTimer();
+}
+
+function startTimer() {
+  state.endAt = Date.now() + state.remaining;
+  state.running = true;
+  clearInterval(tickId);
+  tickId = setInterval(tick, 200);
+  renderTimer();
+}
+function stopTimer() {
+  if (state.running) state.remaining = Math.max(0, state.endAt - Date.now());
+  state.running = false;
+  clearInterval(tickId); tickId = null;
+  renderTimer();
+}
+function tick() {
+  state.remaining = Math.max(0, state.endAt - Date.now());
+  renderTimer();
+  if (state.remaining <= 0) { stopTimer(); timeUp(); }
+}
+
+function startGame() {
+  state.round = 1;
+  state.alive = state.players.map(p => p.id);
+  state.remaining = state.minutes * 60000;
+  show("s-game");
+  renderGame();
+  startTimer();
+}
+
+function timeUp() {
+  state.timeUp = true;
+  buzz([40, 80, 40]);
+  openPause(true);
+}
+
+/* --- overlay pause --- */
+function openPause(isTimeUp) {
+  state.timeUp = !!isTimeUp;
+  $("#pauseTitle").textContent = isTimeUp ? "Hết giờ!" : "Đang tạm dừng";
+  $("#btnResume").textContent = isTimeUp ? "Cộng thêm 1 phút" : "Tiếp tục";
+  $("#ovPause").classList.add("open");
+}
+function closePause() { $("#ovPause").classList.remove("open"); }
+
+$("#btnPause").onclick = () => { stopTimer(); buzz(12); openPause(false); };
+$("#btnResume").onclick = () => {
+  closePause();
+  if (state.timeUp || state.remaining <= 0) { state.remaining = 60000; state.timeUp = false; }
+  startTimer();
+};
+$("#btnGoVote").onclick = () => { closePause(); state.timeUp = false; openVote(); };
+$("#btnQuitGame").onclick = () => {
+  closePause();
+  finish(state.alive.some(id => state.roles[id] === "spy") ? "spy" : "civil");
+};
+
+/* ============================================================
+   5. VOTE
+   ============================================================ */
+let votes = {};      // id -> số phiếu
+let voteOrder = [];  // thứ tự đã chạm
+let voteLocked = false;
+
+function openVote() {
+  stopTimer();
+  votes = {}; voteOrder = []; voteLocked = false;
+  state.alive.forEach(id => { votes[id] = 0; });
+  renderVote();
+  show("s-vote");
+}
+function totalVotes() { return Object.values(votes).reduce((a, b) => a + b, 0); }
+function renderVote() {
+  const box = $("#voteList");
+  const n = state.alive.length;
+  const tot = totalVotes();
+  const max = Math.max(0, ...Object.values(votes));
+  box.innerHTML = "";
+  state.alive.forEach(id => {
+    const p = state.players.find(x => x.id === id);
+    if (!p) return;
+    const r = document.createElement("div");
+    r.className = "vrow" + (votes[id] > 0 ? " hasvotes" : "") + (max > 0 && votes[id] === max ? " lead" : "");
+    r.innerHTML = '<span class="vname"></span><span class="vcount' + (votes[id] ? " on" : "") + '">' + votes[id] + '</span>' +
+                  '<i class="vbars" style="transform:scaleX(' + (n ? votes[id] / n : 0) + ')"></i>';
+    r.querySelector(".vname").textContent = p.name;
+    r.onclick = () => addVote(id);
+    box.appendChild(r);
+  });
+  $("#voteProgress").textContent = tot + " / " + n + " phiếu";
+  $("#voteBar").style.width = (n ? (tot / n) * 100 : 0) + "%";
+  $("#btnUndoVote").disabled = voteOrder.length === 0 || voteLocked;
+  $("#btnClearVote").disabled = voteOrder.length === 0 || voteLocked;
+}
+function addVote(id) {
+  if (voteLocked) return;
+  if (totalVotes() >= state.alive.length) return;
+  votes[id]++; voteOrder.push(id);
+  buzz(9);
+  renderVote();
+  if (totalVotes() >= state.alive.length) {
+    voteLocked = true;
+    renderVote();
+    setTimeout(evaluateVote, 480);
+  }
+}
+$("#btnUndoVote").onclick = () => {
+  if (voteLocked) return;
+  const id = voteOrder.pop();
+  if (id) { votes[id] = Math.max(0, votes[id] - 1); buzz(9); renderVote(); }
+};
+$("#btnClearVote").onclick = () => {
+  if (voteLocked) return;
+  voteOrder = []; state.alive.forEach(id => { votes[id] = 0; }); buzz(9); renderVote();
+};
+
+function evaluateVote() {
+  const max = Math.max(...state.alive.map(id => votes[id]));
+  const leaders = state.alive.filter(id => votes[id] === max);
+  if (leaders.length === 1) { eliminate(leaders[0], max); return; }
+  openResult({                                  // hoà phiếu: không loại ai
+    title: "Hoà phiếu",
+    text: leaders.map(id => nameOf(id)).join(", ") + " — " + max + " phiếu mỗi người.",
+    acts: [
+      { label: "Tiếp tục chơi", cls: "primary", fn: () => { closeResult(); resumeAfterVote(); } },
+      { label: "Vote lại", cls: "", fn: () => { closeResult(); resetVoteCounts(); renderVote(); } }
+    ]
+  });
+}
+
+/* hoà phiếu → quay lại ván, đồng hồ chạy tiếp từ chỗ đã dừng */
+function resumeAfterVote() {
+  if (state.remaining <= 0) { state.remaining = 60000; state.timeUp = false; }  // đã hết giờ thì cộng thêm 1 phút
+  show("s-game");
+  renderGame();
+  startTimer();
+  buzz(12);
+}
+
+function resetVoteCounts() {
+  votes = {}; voteOrder = []; voteLocked = false;
+  state.alive.forEach(id => { votes[id] = 0; });
+}
+function nameOf(id) { const p = state.players.find(x => x.id === id); return p ? p.name : "?"; }
+
+function eliminate(id, count) {
+  const wasSpy = state.roles[id] === "spy";
+  state.alive = state.alive.filter(x => x !== id);
+  const spiesLeft = state.alive.filter(x => state.roles[x] === "spy").length;
+  const civilsLeft = state.alive.length - spiesLeft;
+
+  if (wasSpy && spiesLeft === 0) {
+    openVerdict(true, nameOf(id), [
+      { label: "Xem kết quả", cls: "primary", fn: () => { closeVerdict(); finish("civil"); } }
+    ]);
+    return;
+  }
+  /* luật: gián điệp thắng khi số gián điệp còn sống ≥ số dân còn sống */
+  if (spiesLeft >= civilsLeft) {
+    openVerdict(wasSpy, nameOf(id), [
+      { label: "Xem kết quả", cls: "primary", fn: () => { closeVerdict(); finish("spy"); } }
+    ]);
+    return;
+  }
+  openVerdict(wasSpy, nameOf(id), [
+    { label: "Vòng tiếp theo", cls: "primary", fn: () => { closeVerdict(); nextRound(); } }
+  ]);
+}
+function nextRound() {
+  state.round++;
+  state.remaining = state.minutes * 60000;
+  show("s-game");
+  renderGame();
+  startTimer();
+}
+
+/* ---------- result overlay ---------- */
+function openResult(o) {
+  $("#resTitle").textContent = o.title;
+  $("#resText").textContent = o.text;
+  const box = $("#resActs");
+  box.innerHTML = "";
+  o.acts.forEach(a => {
+    const b = document.createElement("button");
+    b.className = "btn " + (a.cls || "");
+    b.textContent = a.label;
+    b.onclick = a.fn;
+    box.appendChild(b);
+  });
+  $("#ovResult").classList.add("open");
+}
+function closeResult() { $("#ovResult").classList.remove("open"); }
+
+/* vote thành công: màn hình to giữa màn, xanh = bắt đúng gián điệp, đỏ = bắt nhầm (không dùng emoji) */
+const ICON_OK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 12.7l5 5L19.4 6.6"/></svg>';
+const ICON_BAD = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6.2 6.2l11.6 11.6M17.8 6.2L6.2 17.8"/></svg>';
+function openVerdict(isSpy, name, acts) {
+  const ov = $("#ovVerdict");
+  ov.classList.toggle("ok", !!isSpy);
+  ov.classList.toggle("bad", !isSpy);
+  $("#vIcon").innerHTML = isSpy ? ICON_OK : ICON_BAD;
+  $("#vWord").textContent = isSpy ? "LÀ GIÁN ĐIỆP" : "KHÔNG PHẢI GIÁN ĐIỆP";
+  $("#vName").textContent = name;
+  const box = $("#vActs");
+  box.innerHTML = "";
+  acts.forEach(a => {
+    const b = document.createElement("button");
+    b.className = "btn " + (a.cls || "");
+    b.textContent = a.label;
+    b.onclick = a.fn;
+    box.appendChild(b);
+  });
+  ov.classList.add("open");
+}
+function closeVerdict() { $("#ovVerdict").classList.remove("open"); }
+
+/* ============================================================
+   6. KẾT THÚC
+   ============================================================ */
+function finish(winner) {
+  stopTimer();
+  state.winner = winner;                           // không công bố trên màn hình, chỉ lưu để kiểm thử
+  show("s-end");
+  const rev = $("#spyReveal");                     // chỉ chế độ ngẫu nhiên mới có dòng này
+  rev.hidden = !state.randomSpies;
+  rev.textContent = (state.spiesInGame || state.spies) + " gián điệp";
+  $("#endCivil").textContent = state.words.civil;
+  $("#endSpy").textContent = state.words.spy;
+  $("#cardCivil").classList.remove("shown");      // từ bị ẩn, chạm vào mới hiện
+  $("#cardSpy").classList.remove("shown");
+  const known = isKnownMode();                    // chế độ "biết": gián điệp không có từ để lộ
+  $("#cardSpy").hidden = known;
+  $("#wordGrid").classList.toggle("single", known);
+
+  const box = $("#endList");
+  box.innerHTML = "";
+  state.players.forEach(p => {
+    const spy = state.roles[p.id] === "spy";
+    const out = state.alive.indexOf(p.id) < 0;
+    const r = document.createElement("div");       // bị loại thì mờ cả card, không ghi chữ gì thêm
+    r.className = "rrow" + (out ? " out" : "");
+    r.innerHTML = '<span class="n"></span><span class="tag ' + (spy ? "spy" : "civ") + '">' +
+      (spy ? "Gián điệp" : "Dân") + '</span>';
+    r.querySelector(".n").textContent = p.name;
+    box.appendChild(r);
+  });
+  buzz(winner === "spy" ? [30, 60, 30] : 25);
+}
+
+$("#btnPlayAgain").onclick = () => { buzz(12); startDeal(); };
+$("#btnHome").onclick = () => { renderPlayers(); show("s-players"); };
+
+/* ---------- màn kết thúc: chạm vào ô từ mới hiện ---------- */
+["#cardCivil", "#cardSpy"].forEach(sel => {
+  $(sel).addEventListener("click", () => {
+    buzz(10);
+    $(sel).classList.toggle("shown");
+  });
+});
+
+/* ---------- init ---------- */
+if (location.hash === "#debug") window.__gd = state;   /* hook kiểm thử, bình thường không lộ gì */
+renderPlayers();
+renderSettings();
+document.addEventListener("gesturestart", e => e.preventDefault());
+document.addEventListener("dblclick", e => e.preventDefault(), { passive: false });
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden && state.running) { stopTimer(); if ($("#s-game").classList.contains("active")) openPause(false); }
+});
+</script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a3dd39dba88c5df8',t:'MTc4OTg2OTUxNg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
